@@ -7,5 +7,7 @@ while True:
     name = input("请输入名字：")
     if name in scores:
         print(f"{name}的成绩为{scores[name]}")
+    elif name == "q":
+        break
     else:
         print("查无此人")
