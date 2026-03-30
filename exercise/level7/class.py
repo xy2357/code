@@ -1,5 +1,3 @@
-from level4.student_dict import max_student
-
 scores = {
     "小明": 85,
     "小红": 92,
