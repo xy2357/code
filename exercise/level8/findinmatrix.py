@@ -1,4 +1,5 @@
-def find_in_martix(matrix, target):
+def find_in_matrix(matrix, target):
+    found = False
     res_tup = ()
     for i in range(len(matrix)):
         if target in matrix[i]:
@@ -7,7 +8,12 @@ def find_in_martix(matrix, target):
                 if matrix[i][j] == target:
                     col = j
                     res_tup = (row, col)
-    return res_tup
+                    found = True
+                    return res_tup
+            if not found:
+                return None
+    return None
+
 
 matrix = [
     [3, 5, 7],
@@ -15,4 +21,4 @@ matrix = [
     [8, 4, 6]
 ]
 
-print(find_in_martix(matrix, 7))
+print(find_in_matrix(matrix, 10))
