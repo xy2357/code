@@ -1,7 +1,7 @@
 def filter_by_score(students, min_score):
     filter_list = []
     for each in students:
-        if each['score'] > min_score:
+        if each['score'] >= min_score:
             filter_list.append(each)
     return filter_list
 

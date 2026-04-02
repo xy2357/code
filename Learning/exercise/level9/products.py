@@ -36,7 +36,7 @@ while True:
         name = input("请输入商品名：")
         if name in products:
             nums = int(input("请输入售卖数量："))
-            if nums < products[name]["stock"]:
+            if nums <= products[name]["stock"]:
                 products[name]["stock"] -= nums
                 products[name]["sold"] += nums
             else:

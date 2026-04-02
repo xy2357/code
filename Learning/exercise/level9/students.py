@@ -18,7 +18,7 @@ for each in students:
     if each['score'] > max_score:
         max_score = each['score']
         max_student = each['name']
-    elif each['score'] < min_score:
+    if each['score'] < min_score:
         min_score = each['score']
         min_student = each['name']
 
