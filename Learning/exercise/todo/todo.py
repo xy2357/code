@@ -65,7 +65,11 @@ def add_event(todo):
 def delete_event(todo):
     event_index = input_int("请输入事项序号：", todo)
     del todo[event_index]
+    save_todo(todo)
 
-def find_event(todo):
+def done_event(todo):
     event_index = input_int("请输入事项序号：", todo)
-    print(f"{todo[event_index]['title']} - {todo[event_index]['done']}")
+    todo[event_index]['done'] = True
+    save_todo(todo)
+
+
