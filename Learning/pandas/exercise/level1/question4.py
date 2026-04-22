@@ -1,5 +1,7 @@
 import pandas as pd
 
+pd.set_option('display.max_columns', None)
+
 users_merge = pd.DataFrame([
     [1, 'Alice', 'China', '2023-12-20'],
     [2, 'Bob', 'USA', '2023-12-28'],
@@ -42,4 +44,5 @@ df_all = orders_merge.merge(
     on='product_id',
     how='left'
 )
+
 print(df_all)
