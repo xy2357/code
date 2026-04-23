@@ -35,6 +35,8 @@ orders_merge = pd.DataFrame([
     [3012, 2, 104, 1, '2024-03-05 18:30', 'paid'],
 ], columns=['order_id', 'user_id', 'product_id', 'quantity', 'order_time', 'status'])
 
+
+## 问题1
 df_all = orders_merge.merge(
     users_merge[['user_id', 'name', 'country']],
     on='user_id',
@@ -45,4 +47,38 @@ df_all = orders_merge.merge(
     how='left'
 )
 
-print(df_all)
+
+## 问题2
+df_all['final_amount'] = df_all['price'] * df_all['quantity']
+
+# ## 问题3
+# category_country = df_all.pivot_table(index='category', columns='country', values='final_amount', aggfunc='sum').fillna(0)
+# print(category_country)
+
+## 题目4
+country_status = pd.crosstab(df_all['country'], df_all['status']).fillna(0)
+print(country_status)
+# print(df_all)
+
+# ## 题目5
+# students = pd.DataFrame([
+#     ['Alice', 88, 92, 76],
+#     ['Bob', 76, 81, 87],
+#     ['Cathy', 95, 87, 76],
+#     ['David',64, 73, 76],
+#     ['Eva',82, 78, 43],
+#     ['Frank', 91, 89, 89],
+#     ['Grace', 58, 66, 76],
+#     ['Henry', 84, 76, 65],
+#     ['Ivy',77, 80, 87],
+#     ['Jack', 69, 72, 54],
+# ], columns=['name','math', 'english', 'physics'])
+#
+# students_melt = pd.melt(
+#     students,
+#     id_vars=['name'],
+#     value_vars=['math', 'english', 'physics'],
+#     var_name='subject',
+#     value_name='score'
+# )
+# print(students_melt)
