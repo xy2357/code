@@ -37,11 +37,11 @@ df_stage = pd.DataFrame({
 # print(df_stage)
 
 # ## 题目1
-# df_orders['order_time'] = pd.to_datetime(df_orders['order_time'])
+df_orders['order_time'] = pd.to_datetime(df_orders['order_time'])
 # print(df_orders.dtypes)
 #
 # ## 题目2
-# filt = df_orders['status'] == 'paid'
+filt = df_orders['status'] == 'paid'
 # df_paid = df_orders[filt][['order_id', 'user_id', 'order_time', 'final_amount']].reset_index(drop=True)
 # print(df_paid['user_id'])
 #
@@ -51,7 +51,7 @@ df_stage = pd.DataFrame({
 # print(df_paid['user_id'].nunique())
 #
 ## 题目4
-# month_report = df_orders[filt].groupby(df_orders['order_time'].dt.to_period('M')).agg(
+# month_report = df_orders[filt].groupby(df_orders[filt]['order_time'].dt.to_period('M')).agg(
 #     order_count=('order_id', 'count'),
 #     total_amount=('final_amount', 'sum'),
 #     paid_user=('user_id', 'nunique')
@@ -109,7 +109,7 @@ df_stage = pd.DataFrame({
 #     columns='flag',
 #     values='properties_stage_id',
 #     aggfunc='max'
-# ).rename(columns={False: '塔1', True: '塔2'})
+# ).rename(columns={False: '塔1', True: '塔2'}).reset_index()
 # user[['塔1', '塔2']] = user[['塔1', '塔2']].astype('Int64')
 # print(user)
 #
@@ -129,7 +129,7 @@ df_stage = pd.DataFrame({
 # ## 题目16
 # #题目16和15不是一个意思？
 #
-# ## 题目17
+## 题目17
 # filter_paid = df_orders['status'] == 'paid'
 # df_orders = df_orders[filter_paid]
 # df_orders['user_id'] = df_orders['user_id'].astype('Int64')
@@ -138,18 +138,25 @@ df_stage = pd.DataFrame({
 #     paid_total_amount=('final_amount', 'sum')
 # )
 #
-# final_report = df_orders.merge(
+# final_report = user_report.merge(
 #     df_users,
 #     on='user_id',
 #     how='left'
-# ).merge(
-#     user_report,
-#     on='user_id',
-#     how='left'
 # ).sort_values('paid_total_amount', ascending=False).reset_index(drop=True)
+#
+# final_report['paid_avg_amount'] = final_report['paid_total_amount'] / final_report['paid_order_count']
 #
 # print(final_report)
 #
 # ## 题目18
 # filter_user = final_report['paid_order_count'] >= 2
 # print(final_report[filter_user])
+
+## 题目20
+filter_paid = df_orders['status'] == 'paid'
+df_paid = df_orders[filter_paid].copy()
+df_paid['user_id'] = df_paid['user_id'].astype('int')
+# print(df_paid)
+df_paid['user_name'] = df_paid['user_id'].map(df_users.set_index('user_id')['user_name'])
+df_paid['vip_level'] = df_paid['user_id'].map(df_users.set_index('user_id')['vip_level'])
+print(df_paid)
