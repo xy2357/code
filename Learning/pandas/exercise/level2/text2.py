@@ -24,15 +24,15 @@ import numpy as np
 # print(df)
 
 # 用户表
-df_users = pd.DataFrame({
-    'user_id': [101, 102, 103, 104, 105],
-    'user_name': ['A', 'B', 'C', 'D', 'E'],
-    'vip_level': [1, 2, 1, 3, 2]
-})
-
-new_row = {'user_id': 13, 'user_name': 14, 'vip_level': 16}
-df_users = pd.concat([df_users, pd.DataFrame([new_row])], ignore_index=True)
-print(df_users)
-print(df_users.dtypes)
-df_users['user_name'] = df_users['user_name'].astype('str')
-print(df_users.dtypes)
+# df_users = pd.DataFrame({
+#     'user_id': [101, 102, 103, 104, 105],
+#     'user_name': ['A', 'B', 'C', 'D', 'E'],
+#     'vip_level': [1, 2, 1, 3, 2]
+# })
+#
+# new_row = {'user_id': 13, 'user_name': 14, 'vip_level': 16}
+# df_users = pd.concat([df_users, pd.DataFrame([new_row])], ignore_index=True)
+# print(df_users)
+# print(df_users.dtypes)
+# df_users['user_name'] = df_users['user_name'].astype('str')
+# print(df_users.dtypes)
