@@ -1,0 +1,14 @@
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\bin\Debug\net8.0\CSharpMethodExample.exe
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\bin\Debug\net8.0\CSharpMethodExample.deps.json
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\bin\Debug\net8.0\CSharpMethodExample.runtimeconfig.json
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\bin\Debug\net8.0\CSharpMethodExample.dll
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\bin\Debug\net8.0\CSharpMethodExample.pdb
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.GeneratedMSBuildEditorConfig.editorconfig
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.AssemblyInfoInputs.cache
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.AssemblyInfo.cs
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.csproj.CoreCompileInputs.cache
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.dll
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\refint\CSharpMethodExample.dll
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.pdb
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\CSharpMethodExample.genruntimeconfig.cache
+E:\C#\Learning\Learning\CSharpMethodExample\CSharpMethodExample\obj\Debug\net8.0\ref\CSharpMethodExample.dll
