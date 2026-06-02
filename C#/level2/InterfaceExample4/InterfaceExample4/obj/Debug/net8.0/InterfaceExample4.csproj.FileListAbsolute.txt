@@ -1,0 +1,15 @@
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\bin\Debug\net8.0\InterfaceExample4.exe
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\bin\Debug\net8.0\InterfaceExample4.deps.json
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\bin\Debug\net8.0\InterfaceExample4.runtimeconfig.json
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\bin\Debug\net8.0\InterfaceExample4.dll
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\bin\Debug\net8.0\InterfaceExample4.pdb
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.GeneratedMSBuildEditorConfig.editorconfig
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.AssemblyInfoInputs.cache
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.AssemblyInfo.cs
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.csproj.CoreCompileInputs.cache
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.sourcelink.json
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.dll
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\refint\InterfaceExample4.dll
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.pdb
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\InterfaceExample4.genruntimeconfig.cache
+E:\code\C#\level2\InterfaceExample4\InterfaceExample4\obj\Debug\net8.0\ref\InterfaceExample4.dll
