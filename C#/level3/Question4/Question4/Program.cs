@@ -1,15 +1,20 @@
-﻿namespace Question3
+﻿namespace Question4
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            IMovable m1 = new Player();
-            IMovable m2 = new Monster();
+            Player player  = new Player();
+            Monster monster = new Monster();
 
-            m1.Move();
-            m2.Move();
+            LetItMove(player);
+            LetItMove(monster);
 
+        }
+
+        static void LetItMove(IMovable movable)
+        {
+            movable.Move();
         }
     }
 
@@ -34,3 +39,4 @@
         }
     }
 }
+
