@@ -24,8 +24,6 @@ namespace DelegateExample
             c = calc1(a, b);
             Console.WriteLine(c);
 
-            Timer timer = new Timer();
-            timer.Elapsed
         }
     }
 

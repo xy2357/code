@@ -7,16 +7,14 @@
     {
         static void Main(string[] args)
         {
-            Calc c1 = new Calc(Calculator.Add);
-            Calc c2 = new Calc(Calculator.Mul);
-
-            Console.WriteLine(c1(10, 20));
-            Console.WriteLine(c2(10, 20));
+            DoCalc(Calculator.Add, 10, 20);
+            DoCalc(Calculator.Mul, 10, 20);
+            Console.ReadKey();
         }
 
         static void DoCalc(Calc calc,int x, int y)
         {
-            
+            Console.WriteLine(calc(x, y));
         }
     }
 

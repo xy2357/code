@@ -6,18 +6,19 @@
         {
             ProductFactory productFactory = new ProductFactory();
             WrapFactory wrapFactory = new WrapFactory();
-            Logger log = new Logger();
+            Logger logger = new Logger();
 
             Func<Product> func1 = new Func<Product>(productFactory.MakePizza);
             Func<Product> func2 = new Func<Product>(productFactory.MakeToyCar);
 
-            Action<Product> logger = new Action<Product>(log.Log);
+            Action<Product> log = new Action<Product>(logger.Log);
 
-            Box box1 = wrapFactory.WrapProduct(func1, logger);
-            Box box2 = wrapFactory.WrapProduct(func2, logger);
+            Box box1 = wrapFactory.WrapProduct(func1, log);
+            Box box2 = wrapFactory.WrapProduct(func2, log);
 
             Console.WriteLine(box1.Product.Name);
             Console.WriteLine(box2.Product.Name);
+            Console.ReadKey();
         }
     }
 
@@ -43,18 +44,18 @@
 
     class WrapFactory
     {
-        public Box WrapProduct(Func<Product> getProduct, Action<Product> logger)
+        public Box WrapProduct(Func<Product> getProduct, Action<Product> logCallback)
         {
             Box box = new Box();
             Product product = getProduct();
             if (product.Price > 50)
             {
-                logger(product);
+                logCallback(product);
             }
             box.Product = product;
             return box;
         }
-    }
+    } 
 
     class ProductFactory
     {
