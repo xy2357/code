@@ -5,12 +5,11 @@ namespace EventSample7
         public Form1()
         {
             InitializeComponent();
-            this.button3.Click += new EventHandler(this.ButtonClicked);
         }
 
         private void ButtonClicked(object sender, EventArgs e)
         {
-            if (sender == this.button1)
+            if (sender == button1)
             {
                 this.textBox1.Text = "Hello";
             }
@@ -20,7 +19,8 @@ namespace EventSample7
             }
             if (sender == this.button3)
             {
-                this.textBox1.Text = this.button1.Name;
+                this.button1 = this.button3;
+                this.textBox1.Text = "Hello World";
             }
         }
     }

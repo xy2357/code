@@ -69,6 +69,7 @@
             button3.TabIndex = 3;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += ButtonClicked;
             // 
             // Form1
             // 

@@ -28,6 +28,7 @@ namespace EventSample13
             this.Controls.Add(textBox);
             this.Controls.Add(button);
             this.button.Click += this.ButtonClicked;
+            this.button.Top = 100;
 
         }
 
