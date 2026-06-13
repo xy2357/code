@@ -84,11 +84,16 @@ namespace EventSample15
                 Thread.Sleep(1000);
             }
 
+            this.OnOrder("burger", "large");
+        }
+
+        protected void OnOrder(string dishName, string size)
+        {
             if (this.Order != null)
             {
                 OrderEventArgs e = new OrderEventArgs();
-                e.DishName = "Burger";
-                e.Size = "large";
+                e.DishName = dishName;
+                e.Size = size;
                 this.Order.Invoke(this, e);
             }
         }
