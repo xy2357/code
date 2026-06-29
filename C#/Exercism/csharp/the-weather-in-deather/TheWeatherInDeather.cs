@@ -33,18 +33,18 @@ public class WeatherStation
             : reading.Temperature >50 
                 ? Outlook.Good 
                 : Outlook.Warm;
-    public Outlook LongTermOutlook => reading.WindDirection == WindDirection.Southerly
-                                      || reading.WindDirection == WindDirection.Easterly
-                                      && reading.Temperature > 20 
-        ? Outlook.Cool
-        :reading.WindDirection == WindDirection.Northerly 
-            ? Outlook.Cool
-            :reading.WindDirection == WindDirection.Easterly
-             && reading.Temperature <= 20 
-                ? Outlook.Warm 
-                :reading.WindDirection == WindDirection.Westerly
-                    ? Outlook.Rainy
-                    : throw new ArgumentException();
+
+    public Outlook LongTermOutlook =>
+        reading.WindDirection switch
+        {
+            WindDirection.Southerly => Outlook.Good,
+            WindDirection.Easterly when reading.Temperature > 20 => Outlook.Good,
+            WindDirection.Northerly => Outlook.Cool,
+            WindDirection.Easterly when reading.Temperature <= 20 => Outlook.Warm,
+            WindDirection.Westerly => Outlook.Rainy,
+            _ => throw new ArgumentException()
+        };
+
 
     public State RunSelfTest() => reading.Equals(new Reading()) 
         ? State.Bad
