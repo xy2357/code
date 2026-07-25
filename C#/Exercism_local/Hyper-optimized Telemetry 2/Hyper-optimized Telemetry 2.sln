@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hyper-optimized Telemetry 2", "Hyper-optimized Telemetry 2\Hyper-optimized Telemetry 2.csproj", "{F11AD59E-5F06-4F67-9C01-4CA080E2054C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F11AD59E-5F06-4F67-9C01-4CA080E2054C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F11AD59E-5F06-4F67-9C01-4CA080E2054C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F11AD59E-5F06-4F67-9C01-4CA080E2054C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F11AD59E-5F06-4F67-9C01-4CA080E2054C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {334B7EC4-18BD-48C0-9239-6A6F92E419ED}
+	EndGlobalSection
+EndGlobal
