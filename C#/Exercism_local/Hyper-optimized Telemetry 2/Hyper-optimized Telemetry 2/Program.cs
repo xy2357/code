@@ -1,63 +1,71 @@
-﻿using System.Formats.Asn1;
+﻿using System;
 
-namespace Hyper_optimized_Telemetry_2
+public static class TelemetryBuffer
 {
-    internal class Program
+    public static byte[] ToBuffer(long reading)
     {
-        static void Main(string[] args)
+        byte[] buffer = new byte[9];
+
+        if (reading >= 0 && reading <= ushort.MaxValue)
         {
-            Console.WriteLine("Hello, World!");
+            buffer[0] = 2;
+
+            byte[] bytes = BitConverter.GetBytes((ushort)reading);
+
+            Array.Copy(bytes, 0, buffer, 1, bytes.Length);
         }
+        else if (reading >= short.MinValue && reading < 0)
+        {
+            buffer[0] = 254;
+
+            byte[] bytes = BitConverter.GetBytes((short)reading);
+
+            Array.Copy(bytes, 0, buffer, 1, bytes.Length);
+        }
+        else if (reading >= short.MinValue && reading <= int.MaxValue)
+        {
+            buffer[0] = 252;
+
+            byte[] bytes = BitConverter.GetBytes((int)reading);
+
+            Array.Copy(bytes, 0, buffer, 1, bytes.Length);
+        }
+        else if (reading >= int.MaxValue + 1L && reading <= uint.MaxValue)
+        {
+            buffer[0] = 4;
+
+            byte[] bytes = BitConverter.GetBytes((uint)reading);
+
+            Array.Copy(bytes, 0, buffer, 1, bytes.Length);
+        }
+        else
+        {
+            buffer[0] = 248;
+
+            byte[] bytes = BitConverter.GetBytes(reading);
+
+            Array.Copy(bytes, 0, buffer, 1, bytes.Length);
+        }
+
+        return buffer;
     }
 
-    public static class TelemetryBuffer
+
+    public static long FromBuffer(byte[] buffer)
     {
-        public static byte[] ToBuffer(long reading)
+        return buffer[0] switch
         {
-            byte[] buffer = new byte[9];
+            2 => BitConverter.ToUInt16(buffer, 1),
 
-            //ushort
-            if (reading >=0 && reading <=ushort.MaxValue)
-            {
-                buffer[0] = 5;
-                byte[] payload = BitConverter.GetBytes(reading);
-                Array.Copy(payload, 0, buffer, 1, payload.Length);
-            }
-            //short
-            else if (reading >=short.MinValue && reading < 0)
-            {
-                buffer[0] = 0xfe;
-                byte[] payload = BitConverter.GetBytes((short)reading);
-                Array.Copy(payload, 0, buffer, 1, payload.Length);
-            }
-            //int
-            else if (reading <= int.MaxValue && reading >= int.MinValue)
-            {
-                buffer[0] = 0xfc;
-                byte[] payload = BitConverter.GetBytes((short)reading);
-                Array.Copy(payload, 0, buffer, 1, payload.Length);
-            }
-            //unit
-            else if (reading < UInt32.MaxValue)
-            {
-                buffer[0] = 4;
-                byte[] payload = BitConverter.GetBytes((short)reading);
-                Array.Copy(payload, 0, buffer, 1, payload.Length);
-            }
-            else if (reading >= short.MinValue && reading < 0)
-            {
-                buffer[0] = 0xfe;
-                byte[] payload = BitConverter.GetBytes((short)reading);
-                Array.Copy(payload, 0, buffer, 1, payload.Length);
-            }
+            254 => BitConverter.ToInt16(buffer, 1),
 
-            return buffer;
-        }
+            4 => BitConverter.ToUInt32(buffer, 1),
 
-        public static long FromBuffer(byte[] buffer)
-        {
-            throw new NotImplementedException("Please implement the static TelemetryBuffer.FromBuffer() method");
-        }
+            252 => BitConverter.ToInt32(buffer, 1),
+
+            248 => BitConverter.ToInt64(buffer, 1),
+
+            _ => 0
+        };
     }
-
 }
