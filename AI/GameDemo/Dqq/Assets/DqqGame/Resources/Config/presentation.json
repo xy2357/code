@@ -1,0 +1,124 @@
+{
+    "abilities": [
+        {
+            "abilityId": 100101,
+            "accent": "#5AE8FF",
+            "castLabel": "雷霆连击",
+            "hitTimeMs": 180,
+            "totalTimeMs": 420,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "LightningDamage"
+        },
+        {
+            "abilityId": 100201,
+            "accent": "#FFD166",
+            "castLabel": "暴击追猎",
+            "hitTimeMs": 120,
+            "totalTimeMs": 300,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "CriticalDamage"
+        },
+        {
+            "abilityId": 100301,
+            "accent": "#C8FF4A",
+            "castLabel": "闪避反击",
+            "hitTimeMs": 120,
+            "totalTimeMs": 340,
+            "faceTarget": true,
+            "hitReaction": "HitLight",
+            "floatingTextType": "PhysicalDamage"
+        },
+        {
+            "abilityId": 100401,
+            "accent": "#FF4F9A",
+            "castLabel": "血能回路",
+            "hitTimeMs": 80,
+            "totalTimeMs": 260,
+            "faceTarget": false,
+            "hitReaction": "None",
+            "floatingTextType": "Heal"
+        },
+        {
+            "abilityId": 100501,
+            "accent": "#7FE7FF",
+            "castLabel": "寒潮附刃",
+            "hitTimeMs": 130,
+            "totalTimeMs": 310,
+            "faceTarget": true,
+            "hitReaction": "HitLight",
+            "floatingTextType": "FrostDamage"
+        },
+        {
+            "abilityId": 100601,
+            "accent": "#FF8A3D",
+            "castLabel": "余烬印记",
+            "hitTimeMs": 160,
+            "totalTimeMs": 380,
+            "faceTarget": true,
+            "hitReaction": "HitLight",
+            "floatingTextType": "FireDamage"
+        },
+        {
+            "abilityId": 210101,
+            "accent": "#5AE8FF",
+            "castLabel": "极速过载",
+            "hitTimeMs": 100,
+            "totalTimeMs": 650,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "PhysicalDamage"
+        },
+        {
+            "abilityId": 210201,
+            "accent": "#FFD166",
+            "castLabel": "命定一击",
+            "hitTimeMs": 280,
+            "totalTimeMs": 620,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "CriticalDamage"
+        },
+        {
+            "abilityId": 210301,
+            "accent": "#B996FF",
+            "castLabel": "星陨三重奏",
+            "hitTimeMs": 240,
+            "totalTimeMs": 700,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "ArcaneDamage"
+        },
+        {
+            "abilityId": 210401,
+            "accent": "#C8FF4A",
+            "castLabel": "幻影乱舞",
+            "hitTimeMs": 100,
+            "totalTimeMs": 620,
+            "faceTarget": true,
+            "hitReaction": "HitLight",
+            "floatingTextType": "PhysicalDamage"
+        },
+        {
+            "abilityId": 210501,
+            "accent": "#7FE7FF",
+            "castLabel": "绝对零域",
+            "hitTimeMs": 220,
+            "totalTimeMs": 680,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "FrostDamage"
+        },
+        {
+            "abilityId": 210601,
+            "accent": "#FF8A3D",
+            "castLabel": "炼狱点火",
+            "hitTimeMs": 220,
+            "totalTimeMs": 680,
+            "faceTarget": true,
+            "hitReaction": "HitHeavy",
+            "floatingTextType": "FireDamage"
+        }
+    ]
+}

@@ -1,0 +1,584 @@
+{
+    "abilities": [
+        {
+            "abilityId": 100101,
+            "abilityName": "雷霆连击",
+            "description": "每3次普攻追加80%攻击力雷电伤害。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 3,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "Passive|Basic|Lightning",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "Damage",
+                    "coefficientBP": 8000,
+                    "flatValue": 0,
+                    "element": "Lightning",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100201,
+            "abilityName": "暴击追猎",
+            "description": "暴击时追加45%攻击力伤害。",
+            "triggerEvent": "DamageResolved",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 250,
+            "condition": "EventWasCritical",
+            "targetRule": "Enemy",
+            "tags": "Passive|Critical",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "Damage",
+                    "coefficientBP": 4500,
+                    "flatValue": 0,
+                    "element": "Critical",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100301,
+            "abilityName": "闪避反击",
+            "description": "成功闪避时，对攻击者造成100%攻击力反击伤害。",
+            "triggerEvent": "DodgeSucceeded",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventTargetIsOwner",
+            "targetRule": "EventSource",
+            "tags": "Passive|Counter|Dodge",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "Damage",
+                    "coefficientBP": 10000,
+                    "flatValue": 0,
+                    "element": "Physical",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100401,
+            "abilityName": "血能回路",
+            "description": "造成伤害后回复该次伤害18%的生命。",
+            "triggerEvent": "DamageResolved",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Self",
+            "tags": "Passive|Heal",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "HealFromEvent",
+                    "coefficientBP": 1800,
+                    "flatValue": 0,
+                    "element": "Heal",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100501,
+            "abilityName": "寒潮附刃",
+            "description": "每2次普攻施加1层寒霜，6层时冻结。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 2,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "Passive|Frost",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "AddFrost",
+                    "coefficientBP": 0,
+                    "flatValue": 1,
+                    "element": "Frost",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100601,
+            "abilityName": "余烬印记",
+            "description": "每4次普攻施加3次灼烧。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 4,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 300,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "Passive|Fire|Burn",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "AddBurn",
+                    "coefficientBP": 2500,
+                    "flatValue": 0,
+                    "element": "Fire",
+                    "buffId": "burn",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100701,
+            "abilityName": "双重连段",
+            "description": "每5次普攻追加两段45%伤害。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 5,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "Passive|Basic|Combo",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 4500,
+                    "flatValue": 0,
+                    "element": "Physical",
+                    "buffId": "",
+                    "repeatCount": 2,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 100801,
+            "abilityName": "奥能回响",
+            "description": "释放大招后返还22点能量。",
+            "triggerEvent": "AfterUltimate",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Self",
+            "tags": "Passive|Ultimate|Energy",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "GainEnergy",
+                    "coefficientBP": 0,
+                    "flatValue": 22,
+                    "element": "Arcane",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200101,
+            "abilityName": "攻势节拍",
+            "description": "固有被动：每4次普攻追加两次50%伤害。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 4,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "HeroPassive|Basic|Combo",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 5000,
+                    "flatValue": 0,
+                    "element": "Physical",
+                    "buffId": "",
+                    "repeatCount": 2,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200201,
+            "abilityName": "猩红本能",
+            "description": "固有被动：暴击时获得10点能量。",
+            "triggerEvent": "DamageResolved",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 250,
+            "condition": "EventWasCritical",
+            "targetRule": "Self",
+            "tags": "HeroPassive|Critical|Energy",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "GainEnergy",
+                    "coefficientBP": 0,
+                    "flatValue": 10,
+                    "element": "Critical",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200301,
+            "abilityName": "奥能循环",
+            "description": "固有被动：释放大招后返还30点能量。",
+            "triggerEvent": "AfterUltimate",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Self",
+            "tags": "HeroPassive|Ultimate|Energy",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "GainEnergy",
+                    "coefficientBP": 0,
+                    "flatValue": 30,
+                    "element": "Arcane",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200401,
+            "abilityName": "幻步充能",
+            "description": "固有被动：闪避成功时获得24点能量。",
+            "triggerEvent": "DodgeSucceeded",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventTargetIsOwner",
+            "targetRule": "Self",
+            "tags": "HeroPassive|Dodge|Energy",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "GainEnergy",
+                    "coefficientBP": 0,
+                    "flatValue": 24,
+                    "element": "Dodge",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200501,
+            "abilityName": "极地触碰",
+            "description": "固有被动：每次普攻施加1层寒霜。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "HeroPassive|Frost",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "AddFrost",
+                    "coefficientBP": 0,
+                    "flatValue": 1,
+                    "element": "Frost",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 200601,
+            "abilityName": "活体余烬",
+            "description": "固有被动：每2次普攻施加3次灼烧。",
+            "triggerEvent": "AfterBasicAttack",
+            "triggerCount": 2,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 100,
+            "condition": "EventSourceIsOwner",
+            "targetRule": "Enemy",
+            "tags": "HeroPassive|Fire|Burn",
+            "maxTriggersPerChain": 1,
+            "energyCost": 0,
+            "isUltimate": false,
+            "effects": [
+                {
+                    "effectType": "AddBurn",
+                    "coefficientBP": 1800,
+                    "flatValue": 0,
+                    "element": "Fire",
+                    "buffId": "burn",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 210101,
+            "abilityName": "极速过载",
+            "description": "大招：连续轰出6次55%攻击力伤害。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Basic",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 5500,
+                    "flatValue": 0,
+                    "element": "Physical",
+                    "buffId": "",
+                    "repeatCount": 6,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 210201,
+            "abilityName": "命定一击",
+            "description": "大招：造成190%攻击力的必定暴击伤害。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Critical",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 19000,
+                    "flatValue": 0,
+                    "element": "Critical",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": true
+                }
+            ]
+        },
+        {
+            "abilityId": 210301,
+            "abilityName": "星陨三重奏",
+            "description": "大招：降下3颗星陨，每颗造成120%攻击力伤害。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Arcane",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 12000,
+                    "flatValue": 0,
+                    "element": "Arcane",
+                    "buffId": "",
+                    "repeatCount": 3,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 210401,
+            "abilityName": "幻影乱舞",
+            "description": "大招：获得35%闪避并发动4次55%攻击。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Dodge",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "TemporaryDodge",
+                    "coefficientBP": 3500,
+                    "flatValue": 0,
+                    "element": "Dodge",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 3500,
+                    "guaranteedCritical": false
+                },
+                {
+                    "effectType": "RepeatDamage",
+                    "coefficientBP": 5500,
+                    "flatValue": 0,
+                    "element": "Physical",
+                    "buffId": "",
+                    "repeatCount": 4,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 210501,
+            "abilityName": "绝对零域",
+            "description": "大招：造成180%伤害并立即叠满寒霜。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Frost",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "Damage",
+                    "coefficientBP": 18000,
+                    "flatValue": 0,
+                    "element": "Frost",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                },
+                {
+                    "effectType": "AddFrost",
+                    "coefficientBP": 0,
+                    "flatValue": 6,
+                    "element": "Frost",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        },
+        {
+            "abilityId": 210601,
+            "abilityName": "炼狱点火",
+            "description": "大招：引爆全部灼烧，造成180%伤害并重新点燃。",
+            "triggerEvent": "EnergyFull",
+            "triggerCount": 1,
+            "triggerChanceBP": 10000,
+            "internalCooldownMs": 0,
+            "condition": "Always",
+            "targetRule": "Enemy",
+            "tags": "HeroUltimate|Fire|Burn",
+            "maxTriggersPerChain": 1,
+            "energyCost": 100,
+            "isUltimate": true,
+            "effects": [
+                {
+                    "effectType": "DetonateBurn",
+                    "coefficientBP": 0,
+                    "flatValue": 0,
+                    "element": "Fire",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                },
+                {
+                    "effectType": "Damage",
+                    "coefficientBP": 18000,
+                    "flatValue": 0,
+                    "element": "Fire",
+                    "buffId": "",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                },
+                {
+                    "effectType": "AddBurn",
+                    "coefficientBP": 3500,
+                    "flatValue": 0,
+                    "element": "Fire",
+                    "buffId": "burn",
+                    "repeatCount": 1,
+                    "durationMs": 0,
+                    "guaranteedCritical": false
+                }
+            ]
+        }
+    ]
+}
