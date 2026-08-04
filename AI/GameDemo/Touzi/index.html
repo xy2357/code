@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#17152b" />
+    <title>二十一点 · 骰子对决</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <button class="icon-button" id="soundButton" type="button" aria-label="关闭声音" aria-pressed="true">
+          <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2-4.03v8.05A4.5 4.5 0 0 0 16.5 12Zm-2-7.78v2.06a6.5 6.5 0 0 1 0 11.44v2.06a8.5 8.5 0 0 0 0-15.56Z" />
+          </svg>
+          <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9v6h4l5 4V5L8 9H4Zm12.6 3 2.2-2.2-1.4-1.4-2.2 2.2L13 8.4 11.6 9.8l2.2 2.2-2.2 2.2 1.4 1.4 2.2-2.2 2.2 2.2 1.4-1.4-2.2-2.2Z" />
+          </svg>
+        </button>
+        <div class="title-lockup">
+          <p class="eyebrow">LUCKY TABLE</p>
+          <h1>二十一点</h1>
+          <span>骰 子 对 决</span>
+        </div>
+        <button class="icon-button" id="helpButton" type="button" aria-label="查看规则">?</button>
+      </header>
+
+      <section class="rule-strip" aria-label="简要规则">
+        <span>每次投两颗骰子</span>
+        <i></i>
+        <strong>不要超过 21</strong>
+      </section>
+
+      <section class="arena" aria-live="polite">
+        <div class="turn-glow turn-glow--top" id="opponentGlow"></div>
+
+        <section class="player-zone player-zone--opponent" aria-label="机器人区域">
+          <div class="identity">
+            <div class="avatar avatar--bot" aria-hidden="true">
+              <span class="bot-eye"></span><span class="bot-eye"></span>
+            </div>
+            <div>
+              <span class="identity-label">庄家</span>
+              <strong>骰宝机器人</strong>
+            </div>
+          </div>
+          <div class="score-panel score-panel--red">
+            <span>机器人</span>
+            <strong id="opponentScore">0</strong>
+            <small>/ 21</small>
+          </div>
+          <div class="dice-tray dice-tray--top" aria-label="机器人骰子">
+            <div class="die-wrap die-wrap--red" id="opponentDie1"></div>
+            <div class="die-wrap die-wrap--red" id="opponentDie2"></div>
+          </div>
+        </section>
+
+        <div class="table-center">
+          <div class="message-bubble" id="messageBubble">
+            <span class="message-kicker" id="messageKicker">你的回合</span>
+            <strong id="messageText">投出两颗骰子，向 21 靠近</strong>
+          </div>
+          <div class="target-mark" aria-hidden="true">
+            <span>21</span>
+            <small>LIMIT</small>
+          </div>
+          <div class="history" id="history" aria-label="投掷记录">
+            <span class="history-empty">等待第一投…</span>
+          </div>
+        </div>
+
+        <section class="player-zone player-zone--you" aria-label="玩家区域">
+          <div class="dice-tray dice-tray--bottom" aria-label="玩家骰子">
+            <div class="die-wrap die-wrap--blue" id="playerDie1"></div>
+            <div class="die-wrap die-wrap--blue" id="playerDie2"></div>
+          </div>
+          <div class="score-panel score-panel--blue">
+            <span>你</span>
+            <strong id="playerScore">0</strong>
+            <small>/ 21</small>
+          </div>
+          <div class="status-chip" id="statusChip"><span></span>等待投掷</div>
+        </section>
+
+        <div class="turn-glow turn-glow--bottom is-active" id="playerGlow"></div>
+      </section>
+
+      <section class="controls" aria-label="操作区">
+        <button class="action-button action-button--hold" id="holdButton" type="button" disabled>
+          <span class="button-icon">✦</span>
+          <span><strong>保存点数</strong><small>让机器人挑战</small></span>
+        </button>
+        <button class="action-button action-button--roll" id="rollButton" type="button">
+          <span class="dice-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span><strong>投骰子</strong><small>两颗骰子一起投</small></span>
+        </button>
+      </section>
+
+      <p class="tip" id="tipText">你可以随时保存当前点数，但超过 21 会立即落败</p>
+    </main>
+
+    <dialog class="rules-dialog" id="rulesDialog">
+      <button class="dialog-close" id="closeRulesButton" type="button" aria-label="关闭规则">×</button>
+      <p class="eyebrow">HOW TO PLAY</p>
+      <h2>向 21 靠近，及时停手</h2>
+      <ol>
+        <li><span>1</span><p>每次同时投掷两颗骰子，点数会累加。</p></li>
+        <li><span>2</span><p>没有超过 21 时，可以继续投，也可以保存点数。</p></li>
+        <li><span>3</span><p>机器人会不断投掷，直到超过你的点数获胜，或超过 21 落败。</p></li>
+      </ol>
+      <button class="dialog-primary" id="understoodButton" type="button">明白了</button>
+    </dialog>
+
+    <div class="result-overlay" id="resultOverlay" hidden>
+      <div class="result-card">
+        <div class="result-badge" id="resultBadge">胜</div>
+        <p class="eyebrow" id="resultKicker">LUCKY!</p>
+        <h2 id="resultTitle">你赢了！</h2>
+        <p id="resultDescription">机器人爆骰，最终超过了 21。</p>
+        <div class="result-scores">
+          <div><span>你的点数</span><strong id="resultPlayerScore">0</strong></div>
+          <i></i>
+          <div><span>机器人点数</span><strong id="resultOpponentScore">0</strong></div>
+        </div>
+        <button class="dialog-primary" id="restartButton" type="button">再来一局</button>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>

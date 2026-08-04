@@ -1,0 +1,14 @@
+<linker>
+	<assembly fullname="UnityEngine.UIElementsModule">
+		<type fullname="UnityEngine.UIElements.DynamicAtlasSettings" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleComplexSelector" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleProperty" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleRule" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleSelector" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleSelectorPart" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleSheet/ImportStruct" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleSheets.Dimension" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleSheets.ScalableImage" preserve="nothing" serialized="true"/>
+		<type fullname="UnityEngine.UIElements.StyleValueHandle" preserve="nothing" serialized="true"/>
+	</assembly>
+</linker>
