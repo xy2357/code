@@ -19,6 +19,8 @@ namespace DqqGame.Presentation
         private readonly Queue<string> logLines = new Queue<string>();
         private Coroutine playback;
         private Coroutine scrollRoutine;
+        private bool swapSides;
+        private bool localPlayerWon;
 
         public void Initialize(FighterView playerView, FighterView enemyView, RectTransform overlays,
             Text banner, Text clock, Text battleLog, ScrollRect battleLogScroll)
@@ -41,9 +43,11 @@ namespace DqqGame.Presentation
         }
 
         public void Play(BattleResult result, FighterState playerState, FighterState enemyState, int roundNumber,
-            Action<bool> onComplete)
+            Action<bool> onComplete, bool shouldSwapSides = false)
         {
             if (playback != null) StopCoroutine(playback);
+            swapSides = shouldSwapSides;
+            localPlayerWon = swapSides ? !result.PlayerWon : result.PlayerWon;
             player.ResetForBattle(playerState.HeroId, playerState.Name, playerState.MaxHealth);
             enemy.ResetForBattle(enemyState.HeroId, enemyState.Name, enemyState.MaxHealth);
             PushLog(logLines.Count == 0
@@ -67,7 +71,7 @@ namespace DqqGame.Presentation
 
             yield return new WaitForSecondsRealtime(.9f);
             playback = null;
-            onComplete?.Invoke(result.PlayerWon);
+            onComplete?.Invoke(localPlayerWon);
         }
 
         private void Present(BattleViewEvent item)
@@ -142,22 +146,23 @@ namespace DqqGame.Presentation
                     break;
 
                 case BattleViewEventType.BattleEnded:
-                    StartCoroutine(ShowBanner(item.PlayerWon ? "本轮胜利" : "本轮失利",
-                        item.PlayerWon ? UiFactory.Lime : UiFactory.Pink));
+                    StartCoroutine(ShowBanner(localPlayerWon ? "本轮胜利" : "本轮失利",
+                        localPlayerWon ? UiFactory.Lime : UiFactory.Pink));
                     break;
             }
         }
 
         private FighterView View(int id)
         {
-            if (id == 1) return player;
-            if (id == 2) return enemy;
+            if (id == 1) return swapSides ? enemy : player;
+            if (id == 2) return swapSides ? player : enemy;
             return null;
         }
 
-        private static string Name(int id)
+        private string Name(int id)
         {
-            return id == 1 ? "我方" : id == 2 ? "敌方" : "单位";
+            int localId = swapSides ? 2 : 1;
+            return id == localId ? "我方" : id is 1 or 2 ? "敌方" : "单位";
         }
 
         private void SpawnFloating(FighterView target, string value, Color color, int size)

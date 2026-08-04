@@ -28,6 +28,16 @@ namespace DqqGame.Network
 
         public PlayerDto LocalPlayer => FindPlayer(PlayerId);
         public PlayerDto Opponent => Match == null ? null : FindPlayer(Match.yourOpponentId);
+        public PairingDto LocalPairing
+        {
+            get
+            {
+                if (Match?.pairings == null) return null;
+                foreach (PairingDto pairing in Match.pairings)
+                    if (pairing.playerAId == PlayerId || pairing.playerBId == PlayerId) return pairing;
+                return null;
+            }
+        }
 
         public PlayerDto FindPlayer(string id)
         {
@@ -39,10 +49,15 @@ namespace DqqGame.Network
 
         public BuildState BuildOpponentState()
         {
-            PlayerDto opponent = Opponent;
-            BuildState state = new BuildState { HeroId = opponent?.heroId ?? 1 };
-            if (opponent?.upgrades == null) return state;
-            foreach (string id in opponent.upgrades)
+            return BuildPlayerState(Match?.yourOpponentId);
+        }
+
+        public BuildState BuildPlayerState(string playerId)
+        {
+            PlayerDto player = FindPlayer(playerId);
+            BuildState state = new BuildState { HeroId = player?.heroId ?? 1 };
+            if (player?.upgrades == null) return state;
+            foreach (string id in player.upgrades)
             {
                 UpgradeConfig config = GameConfig.Upgrade(id);
                 if (config != null) state.Apply(config);
@@ -53,13 +68,21 @@ namespace DqqGame.Network
 
     public sealed class MatchClient : MonoBehaviour
     {
-        public const string BaseUrl = "http://127.0.0.1:5077";
+        private const string DefaultBaseUrl = "http://127.0.0.1:5077";
+        private static string resolvedBaseUrl;
+
+        public static string BaseUrl => resolvedBaseUrl ?? (resolvedBaseUrl = ResolveBaseUrl());
         public MatchSession Session { get; private set; }
+
+        private void Awake()
+        {
+            UnityEngine.Debug.Log("DQQ match server: " + BaseUrl);
+        }
 
         public IEnumerator Join(int heroId, Action<string> onStatus, Action<MatchSession> onMatched,
             Action<string> onFailed)
         {
-            yield return EnsureLocalServer(onStatus);
+            yield return EnsureServerAvailable(onStatus);
 
             JoinPayload payload = new JoinPayload { displayName = $"玩家{UnityEngine.Random.Range(100, 999)}", heroId = heroId };
             string joinJson = JsonUtility.ToJson(payload);
@@ -67,7 +90,7 @@ namespace DqqGame.Network
             yield return join.SendWebRequest();
             if (join.result != UnityWebRequest.Result.Success)
             {
-                onFailed?.Invoke("无法连接匹配服务器，已切换训练模式");
+                onFailed?.Invoke($"无法连接匹配服务器 {BaseUrl}，已切换训练模式");
                 yield break;
             }
 
@@ -172,12 +195,14 @@ namespace DqqGame.Network
             return request;
         }
 
-        private static IEnumerator EnsureLocalServer(Action<string> onStatus)
+        private static IEnumerator EnsureServerAvailable(Action<string> onStatus)
         {
             UnityWebRequest health = UnityWebRequest.Get(BaseUrl + "/health");
             health.timeout = 1;
             yield return health.SendWebRequest();
             if (health.result == UnityWebRequest.Result.Success) yield break;
+
+            if (!IsLoopbackServer()) yield break;
 
             onStatus?.Invoke("正在启动本地匹配服务器…");
             TryLaunchServer();
@@ -189,6 +214,46 @@ namespace DqqGame.Network
                 yield return retry.SendWebRequest();
                 if (retry.result == UnityWebRequest.Result.Success) yield break;
             }
+        }
+
+        private static string ResolveBaseUrl()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length; i++)
+            {
+                const string prefix = "--server-url=";
+                if (args[i].StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                    return NormalizeBaseUrl(args[i].Substring(prefix.Length));
+                if (string.Equals(args[i], "--server-url", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                    return NormalizeBaseUrl(args[i + 1]);
+            }
+
+            string environmentUrl = Environment.GetEnvironmentVariable("DQQ_MATCH_SERVER_URL");
+            if (!string.IsNullOrWhiteSpace(environmentUrl)) return NormalizeBaseUrl(environmentUrl);
+
+            string configPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "server-url.txt"));
+            if (File.Exists(configPath))
+            {
+                string configuredUrl = File.ReadAllText(configPath).Trim();
+                if (!string.IsNullOrWhiteSpace(configuredUrl)) return NormalizeBaseUrl(configuredUrl);
+            }
+
+            return DefaultBaseUrl;
+        }
+
+        private static string NormalizeBaseUrl(string value)
+        {
+            string candidate = value?.Trim().TrimEnd('/');
+            if (Uri.TryCreate(candidate, UriKind.Absolute, out Uri uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                return uri.GetLeftPart(UriPartial.Authority).TrimEnd('/');
+            UnityEngine.Debug.LogWarning("Invalid DQQ match server URL; using " + DefaultBaseUrl);
+            return DefaultBaseUrl;
+        }
+
+        private static bool IsLoopbackServer()
+        {
+            return Uri.TryCreate(BaseUrl, UriKind.Absolute, out Uri uri) && uri.IsLoopback;
         }
 
         private static void TryLaunchServer()

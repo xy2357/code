@@ -62,7 +62,9 @@ namespace DqqGame
             ShowWelcome();
 
             string[] args = Environment.GetCommandLineArgs();
-            if (Array.IndexOf(args, "-autoplaycapture") >= 0)
+            if (Array.IndexOf(args, "-lanmatchtest") >= 0)
+                StartCoroutine(AutomatedLanMatchTest());
+            else if (Array.IndexOf(args, "-autoplaycapture") >= 0)
                 StartCoroutine(AutomatedCapture());
         }
 
@@ -359,7 +361,7 @@ namespace DqqGame
             matchingStatus.rectTransform.offsetMin = new Vector2(30, 60);
             matchingStatus.rectTransform.offsetMax = new Vector2(-30, -180);
             Text hint = UiFactory.Text("Hint", matchingOverlay,
-                "等待超过1.5秒将自动补入机器人", 17, UiFactory.Muted, TextAnchor.LowerCenter);
+                "等待数秒后将自动补入机器人", 17, UiFactory.Muted, TextAnchor.LowerCenter);
             hint.rectTransform.offsetMin = new Vector2(0, 30);
             matchingOverlay.gameObject.SetActive(false);
         }
@@ -572,13 +574,20 @@ namespace DqqGame
             yield return new WaitForSecondsRealtime(.2f);
             roundText.text = $"ROUND {round:00}";
             CombatWorld world;
-            if (onlineSession != null && onlineSession.Opponent != null)
-                world = new CombatWorld(build, onlineSession.BuildOpponentState(), round,
-                    onlineSession.Match.seed + round * 1009);
+            bool swapSides = false;
+            if (onlineSession != null && onlineSession.Opponent != null && onlineSession.LocalPairing != null)
+            {
+                PairingDto pairing = onlineSession.LocalPairing;
+                BuildState playerA = onlineSession.BuildPlayerState(pairing.playerAId);
+                BuildState playerB = onlineSession.BuildPlayerState(pairing.playerBId);
+                world = new CombatWorld(playerA, playerB, round, onlineSession.Match.seed + round * 1009);
+                swapSides = pairing.playerBId == onlineSession.PlayerId;
+            }
             else
                 world = new CombatWorld(build, round, runSeed + round * 1009);
             BattleResult result = world.Run();
-            presenter.Play(result, world.Player, world.Enemy, round, OnBattleComplete);
+            presenter.Play(result, swapSides ? world.Enemy : world.Player,
+                swapSides ? world.Player : world.Enemy, round, OnBattleComplete, swapSides);
         }
 
         private void OnBattleComplete(bool won)
@@ -618,17 +627,43 @@ namespace DqqGame
                 yield break;
             }
 
-            while (onlineSession.Match.status == "battle" && onlineSession.Match.round == reportedRound)
+            int settlementWaits = 0;
+            int consecutiveRefreshFailures = 0;
+            while (onlineSession != null && onlineSession.Match.status == "battle" &&
+                   onlineSession.Match.round == reportedRound && settlementWaits++ < 80)
             {
                 matchingOverlay.gameObject.SetActive(true);
                 matchingStatus.text = "等待其他对局结算…";
                 yield return new WaitForSecondsRealtime(.5f);
                 bool refreshed = false;
-                yield return matchClient.Refresh(match => { onlineSession.Match = match; refreshed = true; },
-                    error => { battleLog.text = error; refreshed = true; });
+                bool refreshFailed = false;
+                yield return matchClient.Refresh(match =>
+                    {
+                        onlineSession.Match = match;
+                        consecutiveRefreshFailures = 0;
+                        refreshed = true;
+                    },
+                    error =>
+                    {
+                        battleLog.text = error;
+                        refreshFailed = true;
+                        refreshed = true;
+                    });
                 while (!refreshed) yield return null;
+                if (refreshFailed && ++consecutiveRefreshFailures >= 6) onlineSession = null;
             }
             matchingOverlay.gameObject.SetActive(false);
+            if (onlineSession == null ||
+                (onlineSession.Match.status == "battle" && onlineSession.Match.round == reportedRound))
+            {
+                battleLog.text = "在线结算超时，已继续本地训练";
+                onlineSession = null;
+                if (won) wins++; else losses++;
+                round++;
+                UpdateHeader();
+                ShowDraft("结算超时 · 继续训练");
+                yield break;
+            }
             PlayerDto local = onlineSession.LocalPlayer;
             wins += won ? 1 : 0;
             losses = local == null ? losses : 10 - local.lives;
@@ -749,6 +784,28 @@ namespace DqqGame
             ScreenCapture.CaptureScreenshot(Path.Combine(directory, "gameplay.png"));
             yield return new WaitForSecondsRealtime(1f);
             Application.Quit();
+        }
+
+        private IEnumerator AutomatedLanMatchTest()
+        {
+            bool finished = false;
+            bool succeeded = false;
+            yield return matchClient.Join(1,
+                status => Debug.Log("DQQ_LAN_MATCH_STATUS " + status),
+                session =>
+                {
+                    succeeded = session?.Match != null;
+                    finished = true;
+                    Debug.Log($"DQQ_LAN_MATCH_OK match={session?.Match?.matchId} players={session?.Match?.players?.Length}");
+                },
+                error =>
+                {
+                    finished = true;
+                    Debug.LogError("DQQ_LAN_MATCH_FAILED " + error);
+                });
+            while (!finished) yield return null;
+            yield return null;
+            Application.Quit(succeeded ? 0 : 2);
         }
 
         private static string SchoolName(string school)

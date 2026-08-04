@@ -54,6 +54,8 @@ internal sealed class MatchState
     public int Round { get; set; } = 1;
     public string Status { get; set; } = "draft";
     public DateTimeOffset DraftStartedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset BattleStartedAt { get; set; }
+    public DateTimeOffset? FirstResultAt { get; set; }
     public Dictionary<string, PlayerState> Players { get; } = [];
     public List<PairingState> Pairings { get; set; } = [];
     public HashSet<string> UpgradeReady { get; } = [];
