@@ -11,7 +11,22 @@
 - 编辑器菜单：`DQQ/Verify Combat Framework`、`DQQ/Build Windows`
 - Excel 导入菜单：`DQQ/从 Excel 导入配置`
 
-直接运行 `Dqq.exe` 即可。客户端会检测并自动启动同级 `Builds/Server` 中的本地匹配服务器；不足四名玩家时自动补机器人。
+直接运行 `Dqq.exe` 即可。未配置远程地址时，客户端会检测并自动启动同级 `Builds/Server`
+中的本地匹配服务器；不足四名玩家时自动补机器人。
+
+### 局域网匹配
+
+服务器电脑以管理员 PowerShell 运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File Tools/Start-LanServer.ps1 -Restart
+```
+
+客户端服务器地址按以下优先级读取：命令行参数 `--server-url`、环境变量
+`DQQ_MATCH_SERVER_URL`、`Dqq.exe` 同级的 `server-url.txt`，最后才回退到本机
+`http://127.0.0.1:5077`。当前 Windows 包的配置文件已指向 `http://10.27.238.57:5077`。
+把整个 `Builds/Windows` 文件夹发给同事即可；如果服务器电脑的 IP 改变，只需修改
+`server-url.txt` 后重新分发。服务器满 4 人立即开局，默认等待 8 秒后用机器人补足空位。
 
 ## 已实现的框架边界
 

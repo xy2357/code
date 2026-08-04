@@ -1,7 +1,7 @@
 using Dqq.MatchServer;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls(builder.Configuration["urls"] ?? "http://127.0.0.1:5077");
+builder.WebHost.UseUrls(builder.Configuration["urls"] ?? "http://0.0.0.0:5077");
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddSingleton<MatchService>();

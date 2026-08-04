@@ -6,7 +6,9 @@
 [Bb]uilds/*_BurstDebugInformation_DoNotShip/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+outputs/lan-client-build/
 *.csproj
+!Server/Dqq.MatchServer/Dqq.MatchServer.csproj
 *.sln
 *.user
 *.pidb
