@@ -1,0 +1,9 @@
+动作,英文名,帧数,文件名范围,总图行列
+待机,idle,4,thorn_priest_idle_01.png~thorn_priest_idle_04.png,第1行第1~4列
+横移,move,6,thorn_priest_move_01.png~thorn_priest_move_06.png,第2行第1~6列
+举炮瞄准,aim,3,thorn_priest_aim_01.png~thorn_priest_aim_03.png,第3行第1~3列
+充能,charge,3,thorn_priest_charge_01.png~thorn_priest_charge_03.png,第3行第4~6列
+射击后坐,recoil,2,thorn_priest_recoil_01.png~thorn_priest_recoil_02.png,第4行第1~2列
+恢复,recover,2,thorn_priest_recover_01.png~thorn_priest_recover_02.png,第4行第3~4列
+受击,hit,2,thorn_priest_hit_01.png~thorn_priest_hit_02.png,第4行第5~6列
+死亡,death,5,thorn_priest_death_01.png~thorn_priest_death_05.png,第5行第1~5列
