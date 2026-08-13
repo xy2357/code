@@ -119,6 +119,22 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &142934629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3435046556410415455, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
+  m_PrefabInstance: {fileID: 1264777337}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 317f44a77fad64d44a3b9b762fa9898e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiceDice
+--- !u!4 &142934634 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
+  m_PrefabInstance: {fileID: 1264777337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &184971718
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,11 +254,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1676879966}
     m_Modifications:
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.54388
+      value: 0.49988
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalPosition.y
@@ -250,7 +266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.99
+      value: -3.26338
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalRotation.w
@@ -258,15 +274,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4936453437438061931, guid: d3de0a6c1b20d1c4a979a624091a7d27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -413,6 +429,52 @@ Transform:
   - {fileID: 184971719}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1676879964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676879966}
+  - component: {fileID: 1676879965}
+  m_Layer: 0
+  m_Name: DiceTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1676879965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676879964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40410d3e86095e4bb6a5242ed878e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiceTest
+  dice: {fileID: 142934629}
+--- !u!4 &1676879966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676879964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.044, y: 0, z: 0.27338}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 142934634}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2104115263
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,4 +609,4 @@ SceneRoots:
   - {fileID: 1536086569}
   - {fileID: 2104115266}
   - {fileID: 1580853967}
-  - {fileID: 1264777337}
+  - {fileID: 1676879966}
