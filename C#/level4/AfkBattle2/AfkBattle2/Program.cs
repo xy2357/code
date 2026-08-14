@@ -1,21 +1,25 @@
-﻿namespace AfkBattle2
+﻿using System.Xml.Linq;
+
+namespace AfkBattle2
 {
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            Character hero1 = new Character("hero1", 100, 20, 8, 20, 20);
-            Character hero2 = new Character("hero2", 100, 20, 8, 20, 20);
-            Character hero3 = new Character("hero3", 100, 20, 8, 20, 20);
+            Character hero1 = new Character("hero1", 100, 20, 8, 20, 20, Character.CharacterRole.Attacker);
+            Character hero2 = new Character("hero2", 100, 20, 8, 20, 20, Character.CharacterRole.Attacker);
+            Character hero3 = new Character("hero3", 100, 20, 8, 20, 20, Character.CharacterRole.Healer);
 
-            Character enemy1 = new Character("enemy1", 50, 10, 5, 10, 10);
-            Character enemy2 = new Character("enemy2", 50, 10, 5, 10, 10);
-            Character enemy3 = new Character("enemy3", 50, 10, 5, 10, 10);
 
-            List<Character> heros = new List<Character> { hero1, hero2, hero3 };
+            Character enemy1 = new Character("enemy1", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
+            Character enemy2 = new Character("enemy2", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
+            Character enemy3 = new Character("enemy3", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
+
+            List<Character> heroes = new List<Character> { hero1, hero2, hero3 };
             List<Character> enemies = new List<Character> { enemy1, enemy2, enemy3 };
 
-            Battle battle = new Battle(heros, enemies);
+            Battle battle = new Battle(heroes, enemies);
 
             battle.Start();
         }
@@ -31,8 +35,9 @@
         public bool IsDead => Hp <= 0;
         public int CriticalRate { get; set; }
         public int DodgeRate { get; set; }
+        public CharacterRole Role { get; set; }
 
-        public Character(string name, int hp, int attack, int defense, int criticalRate, int dodgeRate)
+        public Character(string name, int hp, int attack, int defense, int criticalRate, int dodgeRate, CharacterRole role)
         {
             Name = name;
             Hp = hp;
@@ -41,6 +46,13 @@
             Defense = defense;
             CriticalRate = criticalRate;
             DodgeRate = dodgeRate;
+            Role = role;
+        }
+
+        public enum CharacterRole
+        {
+            Attacker,
+            Healer
         }
 
         public void AttackTarget(Character target)
@@ -92,6 +104,7 @@
 
         public void HealTarget(Character target)
         {
+            Console.WriteLine($"{Name}治疗了{target.Name}");
             target.Heal(Attack);
         }
 
@@ -152,9 +165,10 @@
             }
         }
 
-        public Character? FindTarget(List<Character> team)
+        //攻击查找目标（最低血量目标）
+        public Character? FindAttackTarget(List<Character> team)
         {
-            Character? nowEnemy = null;
+            Character? nowMember = null;
             foreach (Character member in team)
             {
                 if (member.IsDead)
@@ -162,13 +176,42 @@
                     continue;
                 }
 
-                if (nowEnemy == null || member.Hp < nowEnemy.Hp)
+                if (nowMember == null || member.Hp < nowMember.Hp)
                 {
-                    nowEnemy = member;
+                    nowMember = member;
                 }
             }
-            return nowEnemy;
+            return nowMember;
         }
+
+        //治疗查找目标（最低百分比血量目标）
+        public Character? FindHealTarget(List<Character> team)
+        {
+            Character? nowMember = null;
+            float minHpPrecent = 1f;
+            
+            foreach (Character member in team)
+            {
+                if (member.IsDead)
+                {
+                    continue;
+                }
+
+                if (member.Hp == member.MaxHp)
+                {
+                    continue;
+                }
+
+                float nowMinHpPrecent = (float)member.Hp / member.MaxHp;
+                if (nowMember == null || nowMinHpPrecent < minHpPrecent)
+                {
+                    nowMember = member;
+                    minHpPrecent = nowMinHpPrecent;
+                }
+            }
+            return nowMember;
+        }
+
         public void TeamAttack(List<Character> team,List<Character> targetTeam)
         {
             foreach (Character member in team)
@@ -178,14 +221,35 @@
                     continue;
                 }
 
-                Character? target = FindTarget(targetTeam);
-
-                if (target == null)
+                // 对方已经全灭，本队停止行动
+                if (IsTeamDead(targetTeam))
                 {
                     return;
                 }
 
-                member.AttackTarget(target);
+                if (member.Role == Character.CharacterRole.Healer)
+                {
+                    Character? healTarget = FindHealTarget(team);
+
+                    if (healTarget == null)
+                    {
+                        Console.WriteLine($"{member.Name}没有需要治疗的目标！");
+                        continue;
+                    }
+
+                    member.HealTarget(healTarget);
+
+                }
+                else
+                {
+                    Character? target = FindAttackTarget(targetTeam);
+
+                    if (target == null)
+                    {
+                        return;
+                    }
+                    member.AttackTarget(target);
+                }
             }
         }
 
