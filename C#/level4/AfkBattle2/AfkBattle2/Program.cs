@@ -12,9 +12,10 @@
             Character enemy2 = new Character("enemy2", 50, 10, 5, 10, 10);
             Character enemy3 = new Character("enemy3", 50, 10, 5, 10, 10);
 
+            List<Character> heros = new List<Character> { hero1, hero2, hero3 };
             List<Character> enemies = new List<Character> { enemy1, enemy2, enemy3 };
 
-            Battle battle = new Battle(hero1, enemies);
+            Battle battle = new Battle(heros, enemies);
 
             battle.Start();
         }
@@ -71,6 +72,29 @@
             }
         }
 
+        public void Heal(int amount)
+        {
+            if (IsDead)
+            {
+                Console.WriteLine($"{Name}已死亡，不能治疗！");
+                return;
+            }
+
+            int oldHp = Hp;
+
+            Hp = Math.Min(MaxHp, Hp + amount);
+
+            int realHeal = Hp - oldHp;
+
+            Console.WriteLine($"{Name}恢复了{realHeal}点生命！");
+            Console.WriteLine($"{Name}当前生命值：{Hp}/{MaxHp}");
+        }
+
+        public void HealTarget(Character target)
+        {
+            target.Heal(Attack);
+        }
+
         public void TakeDamage(int damage)
         {
             Hp = Math.Max(0, Hp - damage);
@@ -91,93 +115,85 @@
 
     class Battle
     {
-        private Character hero;
+        private List<Character> heros;
         private List<Character> enemies;
         private int round = 1;
 
-        public Battle(Character hero, List<Character> enemies)
+        public Battle(List<Character> heros, List<Character> enemies)
         {
-            this.hero = hero;
+            this.heros = heros;
             this.enemies = enemies;
         }
 
         public void Start()
         {
-            while (!hero.IsDead)
+            while (!IsTeamDead(heros) && !IsTeamDead(enemies))
             {
                 Console.WriteLine($"=====第{round}回合=====");
 
-                Character? target = FindTarget();
+                TeamAttack(heros,enemies);
 
-                if (target == null)
+                if (IsTeamDead(enemies))
                 {
                     Console.WriteLine("敌方全灭！");
-                    Console.WriteLine($"{hero.Name}获胜！");
-                    break;
+                    Console.WriteLine("我方获胜！");
+                    return;
                 }
-                hero.AttackTarget(target);
 
-                if (IsTeamDead())
+                TeamAttack(enemies,heros);
+
+                if (IsTeamDead(heros))
                 {
-                    Console.WriteLine("敌方全灭！");
-                    Console.WriteLine($"{hero.Name}获胜！");
-                    break;
+                    Console.WriteLine("我方全灭！");
+                    Console.WriteLine("敌方获胜！");
+                    return;
                 }
-
-                foreach (Character enemy in enemies)
-                {
-                    if (enemy.IsDead)
-                    {
-                        continue;
-                    }
-                    enemy.AttackTarget(hero);
-
-                    if (hero.IsDead)
-                    {
-                        Console.WriteLine($"{hero.Name}已死亡！");
-                        Console.WriteLine($"敌方获胜！");
-                        return;
-                    }
-                }
-                //if (target.IsDead)
-                //{
-                //    continue;
-                //}
-
-                //target.AttackTarget(hero);
-
-                //if (hero.IsDead)
-                //{
-                //    Console.WriteLine($"{hero.Name}已死亡！");
-                //    Console.WriteLine($"敌方获胜！");
-                //}
                 round++;
             }
         }
 
-        public Character? FindTarget()
+        public Character? FindTarget(List<Character> team)
         {
             Character? nowEnemy = null;
-            foreach (Character enemy in enemies)
+            foreach (Character member in team)
             {
-                if (enemy.IsDead)
+                if (member.IsDead)
                 {
                     continue;
                 }
 
-                if (nowEnemy == null || enemy.Hp < nowEnemy.Hp)
+                if (nowEnemy == null || member.Hp < nowEnemy.Hp)
                 {
-                    nowEnemy = enemy;
+                    nowEnemy = member;
                 }
             }
             return nowEnemy;
         }
-
-        public bool IsTeamDead()
+        public void TeamAttack(List<Character> team,List<Character> targetTeam)
         {
-            foreach (Character enemy in enemies)
+            foreach (Character member in team)
             {
-                if (!enemy.IsDead)
+                if (member.IsDead)
+                {
+                    continue;
+                }
+
+                Character? target = FindTarget(targetTeam);
+
+                if (target == null)
+                {
+                    return;
+                }
+
+                member.AttackTarget(target);
+            }
+        }
+
+        public bool IsTeamDead(List<Character> team)
+        {
+            foreach (Character member in team)
+            {
+                if (!member.IsDead)
                 {
                     return false;
                 }
