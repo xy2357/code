@@ -92,6 +92,12 @@ namespace AfkBattle2
                 return;
             }
 
+            if (Hp == MaxHp)
+            {
+                Console.WriteLine($"{Name}满血！");
+                return;
+            }
+
             int oldHp = Hp;
 
             Hp = Math.Min(MaxHp, Hp + amount);
@@ -188,7 +194,7 @@ namespace AfkBattle2
         public Character? FindHealTarget(List<Character> team)
         {
             Character? nowMember = null;
-            float minHpPrecent = 1f;
+            float minHpPercent = 1f;
             
             foreach (Character member in team)
             {
@@ -203,10 +209,11 @@ namespace AfkBattle2
                 }
 
                 float nowMinHpPrecent = (float)member.Hp / member.MaxHp;
-                if (nowMember == null || nowMinHpPrecent < minHpPrecent)
+
+                if (nowMember == null || nowMinHpPrecent < minHpPercent)
                 {
                     nowMember = member;
-                    minHpPrecent = nowMinHpPrecent;
+                    minHpPercent = nowMinHpPrecent;
                 }
             }
             return nowMember;
