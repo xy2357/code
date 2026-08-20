@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace AfkBattle2
+﻿namespace AfkBattle2
 {
 
     internal class Program
@@ -16,10 +14,10 @@ namespace AfkBattle2
             Character enemy2 = new Character("enemy2", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
             Character enemy3 = new Character("enemy3", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
 
-            List<Character> heroes = new List<Character> { hero1, hero2, hero3 };
+            List<Character> heros = new List<Character> { hero1, hero2, hero3 };
             List<Character> enemies = new List<Character> { enemy1, enemy2, enemy3 };
 
-            Battle battle = new Battle(heroes, enemies);
+            Battle battle = new Battle(heros, enemies);
 
             battle.Start();
         }
@@ -36,6 +34,8 @@ namespace AfkBattle2
         public int CriticalRate { get; set; }
         public int DodgeRate { get; set; }
         public CharacterRole Role { get; set; }
+
+        public event Action<Character>? Died;
 
         public Character(string name, int hp, int attack, int defense, int criticalRate, int dodgeRate, CharacterRole role)
         {
@@ -77,11 +77,6 @@ namespace AfkBattle2
             Console.WriteLine($"{Name}攻击了{target.Name}");
             Console.WriteLine($"造成了{damage}点伤害");
             Console.WriteLine($"{target.Name}剩余生命值：{target.Hp}/{target.MaxHp}");
-
-            if (target.IsDead)
-            {
-                Console.WriteLine($"{target.Name}已死亡！");
-            }
         }
 
         public void Heal(int amount)
@@ -116,7 +111,13 @@ namespace AfkBattle2
 
         public void TakeDamage(int damage)
         {
+            bool wasAlive = !IsDead;
             Hp = Math.Max(0, Hp - damage);
+
+            if (wasAlive && IsDead)
+            {
+                Died?.Invoke(this);
+            }
         }
 
         public bool IsDodge()
@@ -138,10 +139,24 @@ namespace AfkBattle2
         private List<Character> enemies;
         private int round = 1;
 
+        private void HandleCharacterDied(Character character)
+        {
+            Console.WriteLine($"{character.Name}已死亡！");
+        }
+
         public Battle(List<Character> heros, List<Character> enemies)
         {
             this.heros = heros;
             this.enemies = enemies;
+
+            foreach (Character hero in heros)
+            {
+                hero.Died += HandleCharacterDied;
+            }
+            foreach (Character enemy in enemies)
+            {
+                enemy.Died += HandleCharacterDied;
+            }
         }
 
         public void Start()
@@ -194,7 +209,7 @@ namespace AfkBattle2
         public Character? FindHealTarget(List<Character> team)
         {
             Character? nowMember = null;
-            float minHpPercent = 1f;
+            float minHpPrecent = 1f;
             
             foreach (Character member in team)
             {
@@ -208,12 +223,12 @@ namespace AfkBattle2
                     continue;
                 }
 
-                float nowMinHpPrecent = (float)member.Hp / member.MaxHp;
+                float hpPrecent = (float)member.Hp / member.MaxHp;
 
-                if (nowMember == null || nowMinHpPrecent < minHpPercent)
+                if (nowMember == null || hpPrecent < minHpPrecent)
                 {
                     nowMember = member;
-                    minHpPercent = nowMinHpPrecent;
+                    minHpPrecent = hpPrecent;
                 }
             }
             return nowMember;
