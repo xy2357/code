@@ -14,10 +14,10 @@
             Character enemy2 = new Character("enemy2", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
             Character enemy3 = new Character("enemy3", 50, 10, 5, 10, 10, Character.CharacterRole.Attacker);
 
-            List<Character> heros = new List<Character> { hero1, hero2, hero3 };
+            List<Character> heroes = new List<Character> { hero1, hero2, hero3 };
             List<Character> enemies = new List<Character> { enemy1, enemy2, enemy3 };
 
-            Battle battle = new Battle(heros, enemies);
+            Battle battle = new Battle(heroes, enemies);
 
             battle.Start();
         }
@@ -209,7 +209,7 @@
         public Character? FindHealTarget(List<Character> team)
         {
             Character? nowMember = null;
-            float minHpPrecent = 1f;
+            float minHpPercent = 1f;
             
             foreach (Character member in team)
             {
@@ -223,12 +223,12 @@
                     continue;
                 }
 
-                float hpPrecent = (float)member.Hp / member.MaxHp;
+                float hpPercent = (float)member.Hp / member.MaxHp;
 
-                if (nowMember == null || hpPrecent < minHpPrecent)
+                if (nowMember == null || hpPercent < minHpPercent)
                 {
                     nowMember = member;
-                    minHpPrecent = hpPrecent;
+                    minHpPercent = hpPercent;
                 }
             }
             return nowMember;
