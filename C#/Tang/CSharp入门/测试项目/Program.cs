@@ -4,12 +4,17 @@
     {
         static void Main(string[] args)
         {
-            int a = 5;
-            if (a > 3)
+            int a = 0;
+            int b = 0;
+            while (a < 10)
             {
-                int b = 3;
-                b++;
+                ++a;
+                if (b < 10)
+                {
+                    ++b;
+                }
             }
+            Console.WriteLine(a);
             Console.WriteLine(b);
         }
     }
