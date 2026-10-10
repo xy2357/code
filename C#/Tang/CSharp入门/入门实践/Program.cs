@@ -139,6 +139,16 @@
                         char playerInput;
                         #endregion
 
+                        #region 公主相关属性
+                        int princessX = 24;
+                        int princessY = 5;
+                        string princessIcon = "★";
+                        ConsoleColor princessColor = ConsoleColor.Blue;
+                        #endregion
+
+                        //判断玩家是否处于战斗
+                        bool isFight = false;
+
                         while (true)
                         {
                             //boss血量大于0才显示
@@ -149,6 +159,13 @@
                                 Console.ForegroundColor = bossColor;
                                 Console.Write(bossIcon);
                             }
+                            else
+                            {
+                                //绘制公主
+                                Console.SetCursorPosition(princessX, princessY);
+                                Console.ForegroundColor = princessColor;
+                                Console.Write(princessIcon);
+                            }
 
                             #region 玩家移动相关
                             //画出玩家
@@ -158,29 +175,165 @@
 
                             //读取按键，但不在控制台显示输入的字符
                             playerInput = Console.ReadKey(true).KeyChar;
-                            //擦除原本的位置
-                            Console.SetCursorPosition(playerX, playerY);
-                            Console.Write("  ");
-                            //改到新位置
-                            switch (playerInput)
+
+                            //战斗状态
+                            if (isFight)
                             {
-                                case 'W':
-                                case 'w':
-                                    --playerY;
-                                    break;
-                                case 'A':
-                                case 'a':
-                                    playerX -= 2;
-                                    break;
-                                case 'S':
-                                case 's':
-                                    ++playerY;
-                                    break;
-                                case 'D':
-                                case 'd':
-                                    playerX += 2;
-                                    break;
+                                if (playerInput == 'J' || playerInput == 'j')
+                                {
+                                    //在这判断 玩家或者怪物是否死亡
+                                    if (playerHp <= 0)
+                                    {
+                                        //游戏结束
+                                        //输掉直接显示游戏结束界面
+                                        nowSceneID = 3;
+                                        break;
+                                    }
+                                    else if (bossHp <= 0)
+                                    {
+                                        //去营救公主
+                                        //boss擦除
+                                        Console.SetCursorPosition(bossX, bossY);
+                                        Console.Write("  ");
+                                        isFight = false;
+                                    }
+                                    else
+                                    {
+                                        //玩家打怪物
+                                        //玩家随机攻击力
+                                        Random r = new Random();
+                                        int atk = r.Next(playerAtkMin, playerAtkMax);
+                                        //boss掉血
+                                        bossHp -= atk;
+                                        //打印信息
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        //先擦除上次打印的信息
+                                        Console.SetCursorPosition(2, h - 4);
+                                        Console.Write("                                         ");
+                                        //再打印新的信息
+                                        Console.SetCursorPosition(2, h - 4);
+                                        Console.Write("你对boss造成了{0}伤害，boss还剩余{1}血量", atk, bossHp);
+                                        //怪物打玩家
+                                        if (bossHp > 0)
+                                        {
+                                            //boss随机攻击力
+                                            atk = r.Next(playerAtkMin, playerAtkMax);
+                                            //玩家掉血
+                                            playerHp -= atk;
+                                            //打印信息
+                                            Console.ForegroundColor = ConsoleColor.Yellow;
+                                            //先擦除上次打印的信息
+                                            Console.SetCursorPosition(2, h - 3);
+                                            Console.Write("                                         ");
+                                            //再打印新的信息
+                                            if (playerHp <= 0)
+                                            {
+                                                Console.SetCursorPosition(2, h - 3);
+                                                Console.Write("你死了，你未能通过boss的试炼");
+                                            }
+                                            else
+                                            {
+                                                Console.SetCursorPosition(2, h - 3);
+                                                Console.Write("boss对你造成了{0}伤害，玩家还剩余{1}血量", atk, playerHp);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //擦除之前的信息
+                                            Console.SetCursorPosition(2, h - 5);
+                                            Console.Write("                                         ");
+                                            Console.SetCursorPosition(2, h - 4);
+                                            Console.Write("                                         ");
+                                            Console.SetCursorPosition(2, h - 3);
+                                            Console.Write("                                         ");
+                                            //显示胜利的信息
+                                            Console.SetCursorPosition(2, h - 5);
+                                            Console.Write("你战胜了boss，快去营救公主");
+                                            Console.SetCursorPosition(2, h - 4);
+                                            Console.Write("前往公主身边按J键继续");
+                                        }
+                                    }
+                                }
                             }
+                            else //非战斗状态
+                            {
+                                //擦除原本的位置
+                                Console.SetCursorPosition(playerX, playerY);
+                                Console.Write("  ");
+                                //改到新位置
+                                switch (playerInput)
+                                {
+                                    case 'W':
+                                    case 'w':
+                                        --playerY;
+                                        if (playerY < 1)
+                                        {
+                                            playerY = 1;
+                                        }
+                                        else if (playerX == bossX && playerY == bossY && bossHp > 0)
+                                        {
+                                            ++playerY;
+                                        }
+                                        break;
+                                    case 'A':
+                                    case 'a':
+                                        playerX -= 2;
+                                        if (playerX < 2)
+                                        {
+                                            playerX = 2;
+                                        }
+                                        else if (playerX == bossX && playerY == bossY && bossHp > 0)
+                                        {
+                                            playerX += 2;
+                                        }
+                                        break;
+                                    case 'S':
+                                    case 's':
+                                        ++playerY;
+                                        if (playerY > h - 7)
+                                        {
+                                            playerY = h - 7;
+                                        }
+                                        else if (playerX == bossX && playerY == bossY && bossHp > 0)
+                                        {
+                                            --playerY;
+                                        }
+                                        break;
+                                    case 'D':
+                                    case 'd':
+                                        playerX += 2;
+                                        if (playerX > w - 4)
+                                        {
+                                            playerX = w - 4;
+                                        }
+                                        else if (playerX == bossX && playerY == bossY && bossHp > 0)
+                                        {
+                                            playerX -= 2;
+                                        }
+                                        break;
+                                    case 'J':
+                                    case 'j':
+                                        //开始战斗
+                                        if ((playerX == bossX && playerY == bossY - 1 ||
+                                            playerX == bossX && playerY == bossY + 1 ||
+                                            playerX == bossX - 2 && playerY == bossY ||
+                                            playerX == bossX + 2 && playerY == bossY) && bossHp > 0)
+                                        {
+                                            isFight = true;
+                                            Console.SetCursorPosition(2, h - 5);
+                                            Console.ForegroundColor = ConsoleColor.White;
+                                            Console.Write("开始和boss战斗,按J键继续");
+                                            Console.SetCursorPosition(2, h - 4);
+                                            Console.Write("玩家的血量为{0}", playerHp);
+                                            Console.SetCursorPosition(2, h - 3);
+                                            Console.Write("Boss的血量为{0}", bossHp);
+                                        }
+                                        //玩家不能移动
+                                        //下方显示战斗信息
+                                        break;
+                                }
+                            }
+
                             #endregion
                         }
                         break;
