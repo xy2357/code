@@ -20,6 +20,8 @@
 
             //当前所在场景的编号
             int nowSceneID = 1;
+            //结束时场景显示的内容
+            string gameOverInfo = "";
             while (true) 
             {
                 //不同的场景ID 进行不同的逻辑处理
@@ -148,6 +150,8 @@
 
                         //判断玩家是否处于战斗
                         bool isFight = false;
+                        //判断是否结束
+                        bool isOver = false;
 
                         while (true)
                         {
@@ -186,6 +190,7 @@
                                     {
                                         //游戏结束
                                         //输掉直接显示游戏结束界面
+                                        gameOverInfo = "游戏失败";
                                         nowSceneID = 3;
                                         break;
                                     }
@@ -217,7 +222,7 @@
                                         if (bossHp > 0)
                                         {
                                             //boss随机攻击力
-                                            atk = r.Next(playerAtkMin, playerAtkMax);
+                                            atk = r.Next(bossAtkMin, bossAtkMax);
                                             //玩家掉血
                                             playerHp -= atk;
                                             //打印信息
@@ -274,7 +279,11 @@
                                         {
                                             ++playerY;
                                         }
-                                        break;
+                                        else if (playerX == princessX && playerY == princessY && bossHp <= 0)
+                                        {
+                                            ++playerY;
+                                        }
+                                            break;
                                     case 'A':
                                     case 'a':
                                         playerX -= 2;
@@ -283,6 +292,10 @@
                                             playerX = 2;
                                         }
                                         else if (playerX == bossX && playerY == bossY && bossHp > 0)
+                                        {
+                                            playerX += 2;
+                                        }
+                                        else if (playerX == princessX && playerY == princessY && bossHp <= 0)
                                         {
                                             playerX += 2;
                                         }
@@ -298,6 +311,10 @@
                                         {
                                             --playerY;
                                         }
+                                        else if (playerX == princessX && playerY == princessY && bossHp <= 0)
+                                        {
+                                            --playerY;
+                                        }
                                         break;
                                     case 'D':
                                     case 'd':
@@ -310,10 +327,16 @@
                                         {
                                             playerX -= 2;
                                         }
+                                        else if (playerX == princessX && playerY == princessY && bossHp <= 0)
+                                        {
+                                            playerX -= 2;
+                                        }
                                         break;
                                     case 'J':
                                     case 'j':
                                         //开始战斗
+                                        //玩家不能移动
+                                        //下方显示战斗信息
                                         if ((playerX == bossX && playerY == bossY - 1 ||
                                             playerX == bossX && playerY == bossY + 1 ||
                                             playerX == bossX - 2 && playerY == bossY ||
@@ -328,19 +351,93 @@
                                             Console.SetCursorPosition(2, h - 3);
                                             Console.Write("Boss的血量为{0}", bossHp);
                                         }
-                                        //玩家不能移动
-                                        //下方显示战斗信息
+                                        else if ((playerX == princessX && playerY == princessY - 1 ||
+                                            playerX == princessX && playerY == princessY + 1 ||
+                                            playerX == princessX - 2 && playerY == princessY ||
+                                            playerX == princessX + 2 && playerY == princessY) && bossHp <= 0)
+                                        {
+                                            //改变场景
+                                            gameOverInfo = "游戏通关";
+                                            nowSceneID = 3;
+                                            isOver = true;
+                                            //跳出循环
+                                            break;
+                                        }
                                         break;
                                 }
                             }
-
                             #endregion
+
+                            //拯救公主后跳出内层的while循环
+                            if (isOver)
+                            {
+                                break;
+                            }
                         }
                         break;
                     //结束场景
                     case 3:
                         Console.Clear();
-                        Console.WriteLine("结束场景");
+
+                        Console.SetCursorPosition(w / 2 - 4, 5);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("GameOver");
+                        //可变的显示内容，根据失败还是成功显示不一样的内容
+                        Console.SetCursorPosition(w / 2 - 4, 6);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(gameOverInfo);
+
+                        int nowSelEndIndex = 0;
+                        while (true)
+                        {
+                            bool isQuiteEndWhile = false;
+                            Console.SetCursorPosition(w / 2 - 6, 9);
+                            Console.ForegroundColor = nowSelEndIndex == 0 ? ConsoleColor.Red : ConsoleColor.White;
+                            Console.Write("回到开始界面");
+                            Console.SetCursorPosition(w / 2 - 4, 11);
+                            Console.ForegroundColor = nowSelEndIndex == 1 ? ConsoleColor.Red : ConsoleColor.White;
+                            Console.Write("退出游戏");
+
+
+                            char input = Console.ReadKey(true).KeyChar;
+
+                            switch (input)
+                            {
+                                case 'W':
+                                case 'w':
+                                    --nowSelEndIndex;
+                                    if (nowSelEndIndex < 0)
+                                    {
+                                        nowSelEndIndex = 0;
+                                    }
+                                    break;
+                                case 'S':
+                                case 's':
+                                    ++nowSelEndIndex;
+                                    if (nowSelEndIndex > 1)
+                                    {
+                                        nowSelEndIndex = 1;
+                                    }
+                                    break;
+                                case 'J':
+                                case 'j':
+                                    if (nowSelEndIndex == 0)
+                                    {
+                                        nowSceneID = 1;
+                                        isQuiteEndWhile = true;
+                                    }
+                                    else
+                                    {
+                                        //关闭控制台
+                                        Environment.Exit(0);
+                                    }
+                                    break;
+                            }
+                            if (isQuiteEndWhile)
+                            {
+                                break;
+                            }
+                        }
                         break;
 
                 }
