@@ -108,9 +108,18 @@
             {
                 return a;
             }
-            int value = b;
-            b = a % b;
-            a = value;
+            return Func10(b, a % b);
+        }
+        #endregion
+
+        #region 练习十一
+        static string Func11(string s)
+        {
+            if (s.Length <= 1)
+            {
+                return "是回文";
+            }
+            return s.Substring(1, s.Length - 2);
         }
         #endregion
         static void Main(string[] args)
@@ -124,7 +133,8 @@
             //Console.WriteLine(Func7(2, 10));
             //Console.WriteLine(Func8(3));
             //Console.WriteLine(Func9(1234));
-            Console.WriteLine(Func10(48,18));
+            //Console.WriteLine(Func10(48,18));
+            Func11("level");
         }
     }
 }
