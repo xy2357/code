@@ -113,13 +113,17 @@
         #endregion
 
         #region 练习十一
-        static string Func11(string s)
+        static bool Func11(string s)
         {
             if (s.Length <= 1)
             {
-                return "是回文";
+                return true;
             }
-            return s.Substring(1, s.Length - 2);
+            if (s.Substring(0,1) != s.Substring(s.Length - 1, 1))
+            {
+                return false;
+            }
+            return Func11(s.Substring(1, s.Length - 2));
         }
         #endregion
         static void Main(string[] args)
@@ -134,7 +138,7 @@
             //Console.WriteLine(Func8(3));
             //Console.WriteLine(Func9(1234));
             //Console.WriteLine(Func10(48,18));
-            Func11("level");
+            Console.WriteLine(Func11("level"));
         }
     }
 }
