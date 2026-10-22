@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.9.12112.369
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37531.7 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson1_枚举", "Lesson1_枚举\Lesson1_枚举.csproj", "{1A168942-705E-4E84-9235-DCF8F7FF8A90}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson11_递归函数", "Lesson11_递归函数\Lesson11_递归函数.csproj", "{2156B8BA-DA3D-4C74-934D-A76CEEA649E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson11_练习题", "Lesson11_练习题\Lesson11_练习题.csproj", "{0DE3B50F-661B-4824-A575-3B8C0EB0289D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson12_结构体", "Lesson12_结构体\Lesson12_结构体.csproj", "{8DE870FC-1F9F-4A28-86A7-FC685DAA3CBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{0DE3B50F-661B-4824-A575-3B8C0EB0289D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DE3B50F-661B-4824-A575-3B8C0EB0289D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DE3B50F-661B-4824-A575-3B8C0EB0289D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE870FC-1F9F-4A28-86A7-FC685DAA3CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE870FC-1F9F-4A28-86A7-FC685DAA3CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE870FC-1F9F-4A28-86A7-FC685DAA3CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE870FC-1F9F-4A28-86A7-FC685DAA3CBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
