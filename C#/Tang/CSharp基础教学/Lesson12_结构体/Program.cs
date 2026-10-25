@@ -65,6 +65,53 @@ namespace Lesson12_结构体
             public int atk;
         }
 
+        struct OutMan
+        {
+            public string name;
+            public int atk;
+            public int def;
+            public int hp;
+
+            public OutMan(string name, int atk, int def, int hp)
+            {
+                this.name = name;
+                this.atk = atk;
+                this.def = def;
+                this.hp = hp;
+            }
+
+            public void Atk(ref Boss boss)
+            {
+                //奥特曼打小怪兽
+                boss.hp -= this.atk - boss.def;
+                Console.WriteLine("{0}攻击了{1}, 造成了{2}伤害，剩余{3}血量", name, boss.name, this.atk - boss.def, boss.hp);
+            }
+        }
+        
+        struct Boss
+        {
+            public string name;
+            public int atk;
+            public int def;
+            public int hp;
+
+            public Boss(string name, int atk, int def, int hp)
+            {
+                this.name = name;
+                this.atk = atk;
+                this.def = def;
+                this.hp = hp;
+            }
+
+            public void Atk(ref OutMan outMan)
+            {
+                //小怪兽打奥特曼
+                outMan.hp -= this.atk - outMan.def;
+                Console.WriteLine("{0}攻击了{1}, 造成了{2}伤害，剩余{3}血量", name, outMan.name, this.atk - outMan.def, outMan.hp);
+            }
+        }
+
+
         static void Main(string[] args)
         {
             #region 练习一
@@ -141,6 +188,30 @@ namespace Lesson12_结构体
             //{
             //    Console.WriteLine("{0}的攻击力是{1}", monster.name, monster.atk);
             //}
+            #endregion
+
+            #region 练习五
+            OutMan outMan = new OutMan("雷欧", 10, 5, 100);
+            Boss boss = new Boss("哥斯拉", 8, 4, 100);
+
+            while (true)
+            {
+                outMan.Atk(ref boss);
+                if (boss.hp < 0) 
+                {
+                    Console.WriteLine("{0}胜利",outMan.name);
+                    break;
+                }
+                boss.Atk(ref outMan);
+                if (outMan.hp < 0) 
+                {
+                    Console.WriteLine("{1}胜利",boss.name);
+                    break;
+                }
+                Console.WriteLine("按任意键继续");
+                Console.ReadKey(true);
+
+            }
             #endregion
 
         }
