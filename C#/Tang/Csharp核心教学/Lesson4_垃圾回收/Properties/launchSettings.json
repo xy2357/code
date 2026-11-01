@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Lesson4_垃圾回收": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}

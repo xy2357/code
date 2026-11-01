@@ -1,4 +1,7 @@
-﻿namespace 实践项目
+﻿using System.Collections;
+using System.Numerics;
+
+namespace 实践项目
 {
     enum E_SceneType
     {
@@ -19,7 +22,7 @@
     enum E_GridType
     {
         /// <summary>
-        /// 表示正常状态。
+        /// 表示格子类型。
         /// </summary>
         Normal,
         Boom,
@@ -39,10 +42,11 @@
         }
     }
 
+    #region 格子结构体
     struct Grid
     {
         //格子的类型
-        E_GridType type;
+        public E_GridType type;
         //格子的位置
         public Vector2 pos;
 
@@ -77,6 +81,137 @@
             }
         }
     }
+    #endregion
+
+    #region 地图结构体
+    struct Map
+    {
+        public Grid[] grids;
+
+        //初始化了各个格子的类型和位置
+        public Map(int x, int y, int num)
+        {
+            this.grids = new Grid[num];
+
+            //用于位置改变计数的变量
+            //用于x变化的计数
+            int indexX = 0;
+            //用于y变化的计数
+            int indexY = 0;
+
+            int stepNum = 2;
+
+            Random r = new Random();
+            int randomNum;
+            for (int i = 0; i < num; i++)
+            {
+                //初始化格子类型
+                randomNum = r.Next(1, 101);
+
+                //设置类型 普通格子
+                //85%几率是普通格子 首位两个格子必为普通格子
+                if (randomNum < 85 || i == 0 || i == num - 1)
+                {
+                    grids[i].type = E_GridType.Normal;
+                }
+                //5%几率是炸弹
+                else if (randomNum >= 85 && randomNum < 90)
+                {
+                    grids[i].type = E_GridType.Boom;
+                }
+                //5%几率是暂停
+                else if (randomNum >= 90 && randomNum < 95)
+                {
+                    grids[i].type = E_GridType.Pause;
+                }
+                //5%几率是时空隧道
+                else
+                {
+                    grids[i].type = E_GridType.Tunnel;
+                }
+
+                //设置位置
+                grids[i].pos = new Vector2(x, y);
+
+                //加十次
+                if (indexX == 10)
+                {
+                    y += 1;
+                    //加一次Y记一次数
+                    ++indexY;
+                    if (indexY == 2)
+                    {
+                        //y加了2次之后，把x,y次数置0
+                        indexX = 0;
+                        indexY = 0;
+
+                        //x反向
+                        stepNum = -stepNum;
+                    }
+                }
+                else
+                {
+                    x += stepNum;
+                    //加一次X记一次数
+                    ++indexX;
+                }
+            }
+        }
+
+        public void Draw()
+        {
+            for (int i = 0; i < grids.Length; i++)
+            {
+                grids[i].Draw();
+            }
+        }
+    }
+    #endregion
+
+    #region 玩家枚举和玩家结构体
+    enum E_PlayerType
+    {
+        Player,
+        Computer,
+    }
+
+    struct Player
+    {
+        public E_PlayerType type;
+        //当前所在地图哪一个位置
+        public int nowIndex;
+        //判断玩家是否处于暂停状态
+        public bool isPause;
+
+        public Player(int index, E_PlayerType type)
+        {
+            nowIndex = index;
+            this.type = type;
+            isPause = false;
+        }
+
+        public void Draw(Map mapInfo)
+        {
+            //设置位置
+            //必须要先得到地图 知道在地图哪一个格子
+            Grid grid = mapInfo.grids[nowIndex];
+            //设置位置
+            Console.SetCursorPosition(grid.pos.x, grid.pos.y);
+            //画 设置颜色 设置图标
+            switch (type)
+            {
+                case E_PlayerType.Player:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("★");
+                    break;
+                case E_PlayerType.Computer:
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("▲");
+                    break;
+            }
+        }
+    }
+    #endregion
 
     internal class Program
     {
@@ -97,16 +232,17 @@
                     case E_SceneType.Begin:
                         //开始场景逻辑
                         Console.Clear();
-                        BeginScene(weight, height, ref nowSceneType);
+                        BeginOrEndScene(weight, height, ref nowSceneType);
                         break;
                     case E_SceneType.Game:
                         //游戏场景逻辑
                         Console.Clear();
-                        GameScene(weight, height);
+                        GameScene(weight, height, ref nowSceneType);
                         break;
                     case E_SceneType.End:
                         //结束场景逻辑
                         Console.Clear();
+                        BeginOrEndScene(weight, height, ref nowSceneType);
                         break;
                 }
             }
@@ -124,11 +260,12 @@
             Console.SetBufferSize(weight, height);
         }
 
-        #region 开始场景逻辑
-        static void BeginScene(int weight, int height, ref E_SceneType nowSceneType)
+        #region 开始场景逻辑 + 结束场景逻辑
+        static void BeginOrEndScene(int weight, int height, ref E_SceneType nowSceneType)
         {
-            Console.SetCursorPosition(weight / 2 - 3, 8);
-            Console.WriteLine("飞行棋");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(nowSceneType == E_SceneType.Begin ? weight / 2 - 3: weight / 2 - 4, 8);
+            Console.WriteLine(nowSceneType == E_SceneType.Begin ? "飞行棋" : "游戏结束");
 
             //选项的标记
             int nowSelIndex = 0;
@@ -137,9 +274,10 @@
             while (true)
             {
                 isQuitBegin = false;
-                Console.SetCursorPosition(weight / 2 - 4, 13);
+                Console.SetCursorPosition(nowSceneType == E_SceneType.Begin ? weight / 2 - 4 : weight / 2 - 5, 13);
                 Console.ForegroundColor = nowSelIndex == 0 ? ConsoleColor.Red : ConsoleColor.White;
-                Console.WriteLine("开始游戏");
+                Console.WriteLine(nowSceneType == E_SceneType.Begin ? "开始游戏" : "回到主菜单");
+
                 Console.SetCursorPosition(weight / 2 - 4, 15);
                 Console.ForegroundColor = nowSelIndex == 1 ? ConsoleColor.Red : ConsoleColor.White;
                 Console.WriteLine("退出游戏");
@@ -165,7 +303,7 @@
                         if (nowSelIndex == 0)
                         {
                             //改变当前场景ID
-                            nowSceneType = E_SceneType.Game;
+                            nowSceneType = nowSceneType == E_SceneType.Begin ? E_SceneType.Game : E_SceneType.Begin;
                             //退出开始场景的主循环
                             isQuitBegin = true;
                         }
@@ -184,20 +322,57 @@
         #endregion
 
         #region 游戏场景逻辑
-        static void GameScene(int weight, int height)
+        static void GameScene(int weight, int height, ref E_SceneType nowSecneType)
         {
             //绘制不变的基本信息
             DrawWall(weight, height);
             //绘制地图
-            Grid grid = new Grid(5, 5, E_GridType.Normal);
-            grid.Draw();
+            Map map = new Map(14, 3, 82);
+            map.Draw();
             //绘制玩家
+            Player player = new Player(0, E_PlayerType.Player);
+            Player computer = new Player(0, E_PlayerType.Computer);
+            DrawPlayer(player, computer, map);
 
             //游戏场景主循环
             while (true)
             {
+                //玩家扔色子逻辑
+                if (PlayerRandomMove(weight, height, ref player, ref computer, map, ref nowSecneType))
+                {
+                    break;
+                }
 
+                //电脑扔色子逻辑
+                if (PlayerRandomMove(weight, height, ref computer, ref player, map, ref nowSecneType))
+                {
+                    break;
+                }
             }
+        }
+        #endregion
+
+        #region 玩家移动逻辑
+        static bool PlayerRandomMove(int weight, int height, ref Player p, ref Player otherP, Map map, ref E_SceneType nowSecneType)
+        {
+            //检测输入
+            Console.ReadKey(true);
+            //扔色字的逻辑
+            bool isGameOver = RandomMove(weight, height, ref p, ref otherP, map);
+            //绘制地图
+            map.Draw();
+            //绘制玩家
+            DrawPlayer(p, otherP, map);
+            //判断是否要结束游戏
+            if (isGameOver)
+            {
+                //卡住程序，让玩家按任意键
+                Console.ReadKey(true);
+                //改变场景ID
+                nowSecneType = E_SceneType.End;
+                //跳出场景
+            }
+            return isGameOver;
         }
         #endregion
 
@@ -265,6 +440,160 @@
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(2, height - 5);
             Console.WriteLine("按任意键仍色子");
+        }
+        #endregion
+
+        #region 绘制玩家
+        static void DrawPlayer(Player player,Player computer, Map map)
+        {
+            //重合时
+            if (player.nowIndex == computer.nowIndex)
+            {
+                //得到重合的位置
+                Grid grid = map.grids[player.nowIndex];
+                Console.SetCursorPosition(grid.pos.x, grid.pos.y);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("◎");
+            }
+            //不重合时
+            else
+            {
+                player.Draw(map);
+                computer.Draw(map);
+            }
+        }
+        #endregion
+
+        #region 扔色子
+
+        //擦除函数
+        static void ClearInfo(int weight, int height)
+        {
+            Console.SetCursorPosition(2, height - 5);
+            Console.WriteLine("                                  ");
+            Console.SetCursorPosition(2, height - 4);
+            Console.WriteLine("                                  ");
+            Console.SetCursorPosition(2, height - 3);
+            Console.WriteLine("                                  ");
+            Console.SetCursorPosition(2, height - 2);
+            Console.WriteLine("                                  ");
+        }
+        static bool RandomMove(int weight, int height, ref Player p,ref Player otherP, Map map)
+        {
+            //擦除之前显示的提示信息
+            ClearInfo(weight, height);
+
+            //根据玩家类型显示提示文字的颜色
+            Console.ForegroundColor = p.type == E_PlayerType.Player ? ConsoleColor.Cyan : ConsoleColor.Magenta;
+
+            //扔色子之前判断玩家是否处于暂停状态
+            if (p.isPause)
+            {
+                Console.SetCursorPosition(2, height - 5);
+                Console.WriteLine("处于暂停点，{0}需要暂停一回合！", p.type == E_PlayerType.Player ? "你" : "电脑");
+                Console.SetCursorPosition(2, height - 4);
+                Console.WriteLine("请按任意键，让{0}继续游戏", p.type == E_PlayerType.Player ? "电脑" : "你");
+                p.isPause = false;
+                return false;
+            }
+
+            //扔色子目的是改变玩家位置
+
+            //扔色子，随机一个数加上去
+            Random r = new Random();
+            int randomNum = r.Next(1, 7);
+            p.nowIndex += randomNum;
+
+            //打印扔的点数
+            Console.SetCursorPosition(2, height - 5);
+            Console.WriteLine("{0}扔出的点数是：{1}", p.type == E_PlayerType.Player ? "你" : "电脑", randomNum);
+
+
+            //首先判断是否到终点
+            if (p.nowIndex >= map.grids.Length - 1)
+            {
+                p.nowIndex = map.grids.Length - 1;
+
+                if (p.type == E_PlayerType.Player)
+                {
+                    Console.SetCursorPosition(2, height - 4);
+                    Console.WriteLine("恭喜，你先到达了终点！");
+                }
+                else
+                {
+                    Console.SetCursorPosition(2, height - 4);
+                    Console.WriteLine("电脑先到达了终点！");
+                }
+                Console.SetCursorPosition(2, height - 3);
+                Console.WriteLine("请按任意键结束游戏");
+                return true;
+            }
+            else
+            {
+                //没到终点
+                Grid grid = map.grids[p.nowIndex];
+                switch (grid.type)
+                {
+                    case E_GridType.Normal:
+                        Console.SetCursorPosition(2, height - 4);
+                        Console.WriteLine("{0}到了一个安全位置", p.type == E_PlayerType.Player ? "你" : "电脑");
+                        Console.SetCursorPosition(2, height - 3);
+                        Console.WriteLine("请按任意键，让{0}继续游戏", p.type == E_PlayerType.Player ? "电脑" : "你");
+                        break;
+                    case E_GridType.Boom:
+                        //炸弹退格
+                        p.nowIndex -= 5;
+                        if (p.nowIndex < 0)
+                        {
+                            p.nowIndex = 0;
+                        }
+                        Console.SetCursorPosition(2, height - 4);
+                        Console.WriteLine("{0}踩到了炸弹，退后5格", p.type == E_PlayerType.Player ? "你" : "电脑");
+                        Console.SetCursorPosition(2, height - 3);
+                        Console.WriteLine("请按任意键，让{0}继续游戏", p.type == E_PlayerType.Player ? "电脑" : "你");
+                        break;
+                    case E_GridType.Pause:
+                        //暂停一回合
+                        p.isPause = true;
+                        Console.SetCursorPosition(2, height - 4);
+                        Console.WriteLine("{0}踩到了暂停点，需要暂停一回合", p.type == E_PlayerType.Player ? "你" : "电脑");
+                        Console.SetCursorPosition(2, height - 3);
+                        Console.WriteLine("请按任意键，让{0}继续游戏", p.type == E_PlayerType.Player ? "电脑" : "你");
+                        break;
+                    case E_GridType.Tunnel:
+                        //随机
+                        Console.SetCursorPosition(2, height - 4);
+                        Console.WriteLine("{0}踩到了时空隧道", p.type == E_PlayerType.Player ? "你" : "电脑");
+                        randomNum = r.Next(1, 91);
+                        if (randomNum <= 30)
+                        {
+                            p.nowIndex -= 5;
+                            if (p.nowIndex < 0)
+                            {
+                                p.nowIndex = 0;
+                            }
+                            Console.SetCursorPosition(2, height - 3);
+                            Console.WriteLine("触发了倒退5格");
+                        }
+                        else if(randomNum <= 30)
+                        {
+                            p.isPause = true;
+                            Console.SetCursorPosition(2, height - 3);
+                            Console.WriteLine("触发暂停一回合");
+                        }
+                        else
+                        {
+                            int temp = p.nowIndex;
+                            p.nowIndex = otherP.nowIndex;
+                            otherP.nowIndex = temp;
+                            Console.SetCursorPosition(2, height - 3);
+                            Console.WriteLine("双方交换位置");
+                        }
+                        break;
+                }
+            }
+            //默认没有结束
+            return false;
         }
         #endregion
     }
