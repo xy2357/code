@@ -3,4 +3,5 @@
   <Project Path="Lesson4_垃圾回收/Lesson4_垃圾回收.csproj" />
   <Project Path="Lesson4_垃圾回收_练习题/Lesson4_垃圾回收_练习题.csproj" Id="4e01d1f4-052a-4648-a424-eceb9fbb10ff" />
   <Project Path="Lesson5_属性_练习题/Lesson5_属性_练习题.csproj" Id="5979acec-7bdf-4c9f-ba07-75bf31a2e20b" />
+  <Project Path="Lesson6_索引器/Lesson6_索引器.csproj" Id="106f3716-f73f-4e1b-9a56-6a84b07f1c8d" />
 </Solution>
