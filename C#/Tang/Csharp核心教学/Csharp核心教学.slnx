@@ -6,5 +6,9 @@
   <Project Path="Lesson6_索引器/Lesson6_索引器.csproj" Id="106f3716-f73f-4e1b-9a56-6a84b07f1c8d" />
   <Project Path="Lesson6_索引器_练习题/Lesson6_索引器_练习题.csproj" Id="04069224-bc7c-4e8e-9e25-35a7ee580da5" />
   <Project Path="Lesson7_静态成员_练习题/Lesson7_静态成员_练习题.csproj" Id="3d283508-58d4-44a5-884a-91600c926ce1" />
+  <Project Path="Lesson8_静态类和静态构造函数/Lesson8_静态类和静态构造函数.csproj" Id="0e3122e6-5dca-4bed-bbc0-a142584b6d5f" />
+  <Project Path="Lesson9_拓展方法/Lesson9_拓展方法.csproj" Id="59f2d22b-4876-4fd3-b1d9-870069dc9fec" />
+  <Project Path="Lesson9_拓展方法_练习题/Lesson9_拓展方法_练习题.csproj" Id="e7d54579-9210-4861-b243-f02ae866e3dc" />
+  <Project Path="static相关/static相关.csproj" Id="92a8e64f-31b3-4e18-b1e2-1ec20d1203ae" />
   <Project Path="属性索引器相关练习/属性索引器相关练习.csproj" Id="363f5586-0c89-404c-874e-04384f32bc13" />
 </Solution>
