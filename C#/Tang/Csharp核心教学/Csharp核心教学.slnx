@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="Lesson10_运算符重载/Lesson10_运算符重载.csproj" Id="90bd1116-6252-4a2f-8a3f-9fc2679f4b43" />
+  <Project Path="Lesson11_继承/Lesson11_继承.csproj" Id="99448031-cefc-42cc-821b-dc29f6a4de14" />
   <Project Path="Lesson1_类和对象/Lesson1_类和对象.csproj" />
   <Project Path="Lesson4_垃圾回收/Lesson4_垃圾回收.csproj" />
   <Project Path="Lesson4_垃圾回收_练习题/Lesson4_垃圾回收_练习题.csproj" Id="4e01d1f4-052a-4648-a424-eceb9fbb10ff" />
