@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Lesson13_里氏替换原则/Lesson13_里氏替换原则.csproj" Id="73fd78e0-5a07-4c3a-b378-72e5f23ef2a4" />
   <Project Path="Lesson1_类和对象/Lesson1_类和对象.csproj" />
   <Project Path="Lesson4_垃圾回收/Lesson4_垃圾回收.csproj" />
   <Project Path="Lesson4_垃圾回收_练习题/Lesson4_垃圾回收_练习题.csproj" Id="4e01d1f4-052a-4648-a424-eceb9fbb10ff" />
