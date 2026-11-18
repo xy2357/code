@@ -14,4 +14,5 @@
   <Project Path="Lesson9_拓展方法_练习题/Lesson9_拓展方法_练习题.csproj" Id="e7d54579-9210-4861-b243-f02ae866e3dc" />
   <Project Path="static相关/static相关.csproj" Id="92a8e64f-31b3-4e18-b1e2-1ec20d1203ae" />
   <Project Path="属性索引器相关练习/属性索引器相关练习.csproj" Id="363f5586-0c89-404c-874e-04384f32bc13" />
+  <Project Path="继承中的构造函数/继承中的构造函数.csproj" Id="33d4f448-f86d-4fe9-bb48-2d4a36c8121c" />
 </Solution>
