@@ -3,6 +3,7 @@
   <Project Path="Lesson11_继承/Lesson11_继承.csproj" Id="99448031-cefc-42cc-821b-dc29f6a4de14" />
   <Project Path="Lesson13_里氏替换原则/Lesson13_里氏替换原则.csproj" Id="73fd78e0-5a07-4c3a-b378-72e5f23ef2a4" />
   <Project Path="Lesson16_密封类/Lesson16_密封类.csproj" Id="57c34350-d5cf-4d48-846d-fc5654d2dfaa" />
+  <Project Path="Lesson17_多态/Lesson17_多态.csproj" Id="da441359-2c7b-48ba-a09f-b6bdcc92d03d" />
   <Project Path="Lesson1_类和对象/Lesson1_类和对象.csproj" />
   <Project Path="Lesson4_垃圾回收/Lesson4_垃圾回收.csproj" />
   <Project Path="Lesson4_垃圾回收_练习题/Lesson4_垃圾回收_练习题.csproj" Id="4e01d1f4-052a-4648-a424-eceb9fbb10ff" />
@@ -15,5 +16,6 @@
   <Project Path="Lesson9_拓展方法_练习题/Lesson9_拓展方法_练习题.csproj" Id="e7d54579-9210-4861-b243-f02ae866e3dc" />
   <Project Path="static相关/static相关.csproj" Id="92a8e64f-31b3-4e18-b1e2-1ec20d1203ae" />
   <Project Path="属性索引器相关练习/属性索引器相关练习.csproj" Id="363f5586-0c89-404c-874e-04384f32bc13" />
+  <Project Path="抽象类/抽象类.csproj" Id="9a5dfa44-fcdd-490e-939c-34c077d9844e" />
   <Project Path="继承中的构造函数/继承中的构造函数.csproj" Id="33d4f448-f86d-4fe9-bb48-2d4a36c8121c" />
 </Solution>
